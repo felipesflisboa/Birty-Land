@@ -47,6 +47,7 @@ public class Player : Character {
 	protected override void Awake(){
 		base.Awake();
 		team = Team.ALLY;
+		groundPlane = new Plane(Vector3.down, Vector3.zero);
 		levelController = new PlayerLevelController(this);
 		bulletTimer = new Timer(bulletCooldown);
 		cursorDetectionTimer = new Timer(CURSOR_DETECTION_INTERVAL);
