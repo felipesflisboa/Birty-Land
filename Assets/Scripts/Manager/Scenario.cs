@@ -101,13 +101,13 @@ public class Scenario : SingletonMonoBehaviour<Scenario> {
 
 	void OnDrawGizmos() {
 		Gizmos.color = new Color(0.2f,0.6f, 0.6f, 0.75f);
-		Gizmos.DrawWireCube (transform.position, new Vector3(size.x-2*border,1f,size.y-2*border));
+		Gizmos.DrawWireCube (transform.position, (size - Vector2.one*border).YToZ());
 		Gizmos.color = new Color(0.2f,1f, 0.2f, 0.75f);
-		Gizmos.DrawWireCube (transform.position, new Vector3(size.x,1f,size.y));
+		Gizmos.DrawWireCube (transform.position, size.YToZ());
 	}
 
 	void OnDrawGizmosSelected() {
 		Gizmos.color = new Color(0.2f,0.4f, 0.8f, 0.6f);
-		Gizmos.DrawSphere (new Vector3(playerStartPos.x,1f,playerStartPos.y), 0.4f);
+		Gizmos.DrawSphere (playerStartPos.YToZ(), 0.4f);
 	}
 }
