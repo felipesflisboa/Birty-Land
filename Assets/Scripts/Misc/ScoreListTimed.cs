@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// Timed racing game example for ScoreList. Values are stored as seconds.
+/// Timed racing for ScoreList. Values are stored as seconds.
 /// </summary>
 public class ScoreListTimed : ScoreListInt{
 	protected override string KeyLabel{

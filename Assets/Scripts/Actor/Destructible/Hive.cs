@@ -17,6 +17,7 @@ public class Hive : Destructible {
 	[SerializeField] float spawnInterval;
 	[SerializeField, Tooltip("For avoiding lag if each spawn point spawn at same intervals")] float initialIntervalBase;
 
+	float creepRadius;
 	int stoppedCreepsNearCount;
 
 	protected bool CanAct{
@@ -28,10 +29,6 @@ public class Hive : Destructible {
 	protected override void Awake(){
 		base.Awake();
 		team = Team.ENEMY;
-	}
-
-	public override void Initialize(){
-		base.Initialize();
 		StartCoroutine(SpawnRoutine());
 	}
 
@@ -43,9 +40,12 @@ public class Hive : Destructible {
 	}
 
 	IEnumerator SpawnRoutine(){
+		yield return new WaitForEndOfFrame(); // Executes only after other methods calls.
 		bool atGameStart = GameManager.I.SecondsFloat<5f;
 		if(atGameStart)
 			yield return new WaitForSeconds(initialIntervalBase*hiveId);
+
+		creepRadius = creepPrefab.GetComponent<Destructible>().sphereCastRadius;
 
 		int initialSpawn = atGameStart ? initialSpawnAtGameStart : initialSpawnAfterGameStart;
 		for (int i = 0; i < initialSpawn; i++)
@@ -61,7 +61,6 @@ public class Hive : Destructible {
 	}
 		
 	Creep Spawn(){
-		Vector2 posV2 = new Vector2(transform.position.x, transform.position.z);
 		float usedSpawnRadius = spawnRadius;
 		for(int overflowCount = 0; overflowCount<200; overflowCount++){
 			if(overflowCount==100){
@@ -71,15 +70,12 @@ public class Hive : Destructible {
 				usedSpawnRadius*=1.5f;
 			}
 
-			Vector2 randomPos = Random.insideUnitCircle*usedSpawnRadius+posV2;
-			Vector3 randomPosV3 = new Vector3(randomPos.x, 0f, randomPos.y);
-			const float creepRadius = .3f;
-			bool canSpawn = Physics.OverlapSphere(randomPosV3, creepRadius).Length == 0;
+			Vector3 randomPos = (Random.insideUnitCircle*usedSpawnRadius + transform.position.XZToV2()).YToZ();
+			bool canSpawn = Physics.OverlapSphere(randomPos, creepRadius).Length == 0;
 			if(canSpawn){
 				Creep creep = Instantiate(creepPrefab).GetComponent<Creep>();
-				creep.transform.position = randomPosV3;
+				creep.transform.position = randomPos;
 				creep.transform.SetParent(Scenario.I.actorArea);
-				creep.Initialize();
 				return creep;
 			}
 		}

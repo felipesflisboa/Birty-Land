@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Base class for game objects like bullets, hive and player.
+/// </summary>
 public class Actor : MonoBehaviour {
 	[SerializeField] protected GameObject[] explosionPrefabArray;
 	internal Team team;
@@ -42,15 +45,6 @@ public class Actor : MonoBehaviour {
 #endregion
 
 #region Actor main
-	/// <summary>
-	/// Called each time when the actor is created and spawned, right after the position is set.
-	/// </summary>
-	public virtual void Initialize(){
-		gameObject.SetActive(true);
-		if(clampPosTimer != null)
-			clampPosTimer.Reset();
-	}
-
 	public virtual void Explode(){
 		foreach(GameObject explosionPrefab in explosionPrefabArray){
 			Vector3 explosionPos = transform.position;
@@ -73,7 +67,7 @@ public class Actor : MonoBehaviour {
 	/// Clamp position to scenario bounds.
 	/// </summary>
 	protected void ClampPos(){
-		if(!Scenario.I.Rect.Contains(new Vector2(transform.position.x, transform.position.z))){
+		if(!Scenario.I.Rect.Contains(transform.position.XZToV2())){
 			Vector3 newPos = transform.position;
 			newPos.x = Mathf.Clamp(newPos.x, Scenario.I.Rect.xMin, Scenario.I.Rect.xMax);
 			newPos.z = Mathf.Clamp(newPos.z, Scenario.I.Rect.yMin, Scenario.I.Rect.yMax);

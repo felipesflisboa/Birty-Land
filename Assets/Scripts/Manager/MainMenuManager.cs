@@ -1,28 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InitialMenuManager : SingletonMonoBehaviour<InitialMenuManager> {
-	public enum Option{
-		NONE=0, TITLE, INFO, CONTROLS, HIGH_SCORES
-	}
-	Option currentPanelOption;
-	InitialMenuPanel[] panelArray;
+public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
+	MainMenuPanelType currentPanelOption;
+	MainMenuPanel[] panelArray;
 	Timer clickCooldownTimer;
 
 	void Start () {
 		clickCooldownTimer = new Timer(0.75f);
 
-		panelArray = GetComponentsInChildren<InitialMenuPanel>(true);
+		panelArray = GetComponentsInChildren<MainMenuPanel>(true);
 
 		bool hasScore = ScoreListTimedDrawer.lastScore!=null;
 
-		Option newPanelOption = hasScore ? Option.HIGH_SCORES : Option.TITLE;
+		MainMenuPanelType newPanelOption = hasScore ? MainMenuPanelType.HIGH_SCORES : MainMenuPanelType.TITLE;
 		EnablePanel(newPanelOption);
 	}
 
-	public void EnablePanel(Option panelOption){
+	public void EnablePanel(MainMenuPanelType panelOption){
 		currentPanelOption = panelOption;
-		foreach(InitialMenuPanel panel in panelArray){
+		foreach(MainMenuPanel panel in panelArray){
 			panel.gameObject.SetActive(panel.panelType==panelOption);
 		}
 	}
@@ -34,15 +31,15 @@ public class InitialMenuManager : SingletonMonoBehaviour<InitialMenuManager> {
 	}
 
 	public void Info(){
-		EnablePanel(Option.INFO);
+		EnablePanel(MainMenuPanelType.INFO);
 	}
 
 	public void Controls(){
-		EnablePanel(Option.CONTROLS);
+		EnablePanel(MainMenuPanelType.CONTROLS);
 	}
 
 	public void HighScores(){
-		EnablePanel(Option.HIGH_SCORES);
+		EnablePanel(MainMenuPanelType.HIGH_SCORES);
 	}
 
 	public void Exit(){
@@ -53,12 +50,12 @@ public class InitialMenuManager : SingletonMonoBehaviour<InitialMenuManager> {
 	void Update(){
 		bool backToTitle = (
 			Input.GetButtonDown("Fire1") && 
-			currentPanelOption!=Option.TITLE && 
-			currentPanelOption!=Option.INFO && 
+			currentPanelOption!=MainMenuPanelType.TITLE && 
+			currentPanelOption!=MainMenuPanelType.INFO && 
 			clickCooldownTimer.CheckAndUpdate()
 		);
 		if(backToTitle){
-			EnablePanel(Option.TITLE);
+			EnablePanel(MainMenuPanelType.TITLE);
 		}
 	}
 }

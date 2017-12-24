@@ -2207,39 +2207,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationContainer: {fileID: 1835935872}
-  animationGroupArray:
-  - animationTransformArray:
-    - {fileID: 166704072}
-  - animationTransformArray:
-    - {fileID: 2002931512}
-  - animationTransformArray:
-    - {fileID: 2125663118}
-  - animationTransformArray:
-    - {fileID: 925429512}
-  - animationTransformArray:
-    - {fileID: 1627791001}
-  - animationTransformArray:
-    - {fileID: 2094351787}
-  - animationTransformArray:
-    - {fileID: 1410569661}
-  - animationTransformArray:
-    - {fileID: 499837101}
-  - animationTransformArray:
-    - {fileID: 1462119068}
-  - animationTransformArray:
-    - {fileID: 1060424317}
-  - animationTransformArray:
-    - {fileID: 1642921687}
-  - animationTransformArray:
-    - {fileID: 1312759372}
-  - animationTransformArray:
-    - {fileID: 499709563}
-  - animationTransformArray:
-    - {fileID: 2028958110}
-  - animationTransformArray:
-    - {fileID: 1887980585}
-  - animationTransformArray:
-    - {fileID: 832007556}
+  animationTransformArray:
+  - {fileID: 166704072}
+  - {fileID: 2002931512}
+  - {fileID: 2125663118}
+  - {fileID: 925429512}
+  - {fileID: 1627791001}
+  - {fileID: 2094351787}
+  - {fileID: 1410569661}
+  - {fileID: 499837101}
+  - {fileID: 1462119068}
+  - {fileID: 1060424317}
+  - {fileID: 1642921687}
+  - {fileID: 1312759372}
+  - {fileID: 499709563}
+  - {fileID: 2028958110}
+  - {fileID: 1887980585}
+  - {fileID: 832007556}
 --- !u!1001 &396776887
 Prefab:
   m_ObjectHideFlags: 0

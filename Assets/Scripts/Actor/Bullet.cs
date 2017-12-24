@@ -8,7 +8,6 @@ public class Bullet : Actor {
 	public void InitializeBullet(Actor pOwner, int pDamage, float pSpeed, float pDuration){
 		damage = pDamage;
 		team = pOwner.team;
-		Initialize();
 		Rigidbody.velocity = transform.forward * pSpeed;
 		this.Invoke(new WaitForSeconds(pDuration), Finish);
 	}

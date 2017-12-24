@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 224599954319934270}
   - component: {fileID: 222984763153694912}
   - component: {fileID: 225696153225782348}
+  - component: {fileID: 114585501527451918}
   m_Layer: 5
   m_Name: Pause Alert Rect
   m_TagString: Untagged
@@ -624,7 +625,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameOverRect: {fileID: 224487518681236200}
   pauseRect: {fileID: 224291840259566716}
-  pauseAlertRect: {fileID: 224599954319934270}
+  pauseAlert: {fileID: 114585501527451918}
 --- !u!114 &114203708001911528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1035,6 +1036,17 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114585501527451918
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1121084956668916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28199c05480e2004ab9302ef6c94f33b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114596461756106540
 MonoBehaviour:
   m_ObjectHideFlags: 1

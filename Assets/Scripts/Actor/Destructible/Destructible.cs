@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Base class for anything that has HP.
+/// </summary>
 public class Destructible : Actor {
 	public int scoreValue;
+	[Tooltip("For calculate when spawning")] public float sphereCastRadius;
 	[SerializeField] int defaultMaxHP = 1;
-	[SerializeField] float regenPerSecondPercent01;
+	[SerializeField] float regenPerSecondRatio;
+
 	internal int maxHP;
 	internal int hp;
 	float regenCount;
@@ -22,8 +27,8 @@ public class Destructible : Actor {
 		}
 	}
 
-	public override void Initialize(){
-		base.Initialize();
+	protected override void Awake(){
+		base.Awake();
 		if(defaultMaxHP != 0){
 			maxHP = defaultMaxHP;
 		}
@@ -35,8 +40,8 @@ public class Destructible : Actor {
 
 	protected override void Update(){
 		base.Update();
-		if(Alive && regenPerSecondPercent01>0){
-			regenCount+=regenPerSecondPercent01*Time.deltaTime*maxHP;
+		if(Alive && regenPerSecondRatio>0){
+			regenCount+=regenPerSecondRatio*Time.deltaTime*maxHP;
 			while(regenCount>1f){
 				regenCount-=1f;
 				AddHP(1);

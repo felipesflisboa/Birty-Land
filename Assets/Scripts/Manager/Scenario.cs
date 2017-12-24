@@ -3,11 +3,12 @@ using System.Linq;
 using UnityEngine;
 
 public class Scenario : SingletonMonoBehaviour<Scenario> {
-	[SerializeField] Vector2 size;
-	[SerializeField] float border; // Counting size
+	[Tooltip("Counting border"), SerializeField] Vector2 size;
+	[SerializeField] float border;
+	public Vector2 playerStartPos;
 	public Transform actorArea;
 
-	//TODO cache creeps instead of searching every method call
+	readonly internal List<Creep> creepList = new List<Creep>();
 
 	bool refreshNotifyCreeps;
 	Timer notifyCreepsRefreshTimer;
@@ -66,7 +67,7 @@ public class Scenario : SingletonMonoBehaviour<Scenario> {
 				continue;
 
 			Vector3 difference = creep.transform.position - pos;
-			bool onRange = new Vector2(difference.x,difference.z).sqrMagnitude < creep.sqrTriggerHuntMaxDistance;
+			bool onRange = difference.XZToV2().sqrMagnitude < creep.sqrTriggerHuntMaxDistance;
 			creep.hunting = onRange;
 		}
 
@@ -84,24 +85,29 @@ public class Scenario : SingletonMonoBehaviour<Scenario> {
 	/// <param name="hunting">If isn't null, return only creeps with the same hunting value.</param>
 	public List<Creep> GetCreepsOnPosition(Vector3 pos, float radius, bool? hunting){
 		float sqrRadius = radius*radius;
-		List<Creep> creepList = new List<Creep>();
-		foreach(Creep creep in actorArea.GetComponentsInChildren<Creep>()){
+		List<Creep> ret = new List<Creep>();
+		foreach(Creep creep in creepList){
 			if(hunting != null && creep.hunting != hunting)
 				continue;
 
 			Vector3 difference = creep.transform.position - pos;
-			bool onRange = new Vector2(difference.x,difference.z).sqrMagnitude < sqrRadius;
+			bool onRange = difference.XZToV2().sqrMagnitude < sqrRadius;
 			//TODO add creep radius
 			if(onRange)
-				creepList.Add(creep);
+				ret.Add(creep);
 		}
-		return creepList;
+		return ret;
 	}
 
 	void OnDrawGizmos() {
-		Gizmos.color = new Color(0.2f,0.6f, 0.6f, 0.75F);
+		Gizmos.color = new Color(0.2f,0.6f, 0.6f, 0.75f);
 		Gizmos.DrawWireCube (transform.position, new Vector3(size.x-2*border,1f,size.y-2*border));
-		Gizmos.color = new Color(0.2f,1F, 0.2f, 0.75F);
+		Gizmos.color = new Color(0.2f,1f, 0.2f, 0.75f);
 		Gizmos.DrawWireCube (transform.position, new Vector3(size.x,1f,size.y));
+	}
+
+	void OnDrawGizmosSelected() {
+		Gizmos.color = new Color(0.2f,0.4f, 0.8f, 0.6f);
+		Gizmos.DrawSphere (new Vector3(playerStartPos.x,1f,playerStartPos.y), 0.4f);
 	}
 }

@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// T2
 public class GameManager : SingletonMonoBehaviour<GameManager> {
 	[SerializeField] GameObject canvasManagerPrefab;
 	[SerializeField] GameObject playerPrefab;
 
 	internal Player player;
 	internal GameState state;
-	internal int score{get; private set;}
+	internal int score{get; private set;} // Score is the point amount, counting the values spent.
 	internal int points{get; private set;}
 
 	protected float startTime;
@@ -36,9 +35,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	void Awake () {
 		state = GameState.BEFORE_START;
 
-		bool canvasManagerFound  = FindObjectOfType<CanvasManager>() != null; //TODO other assign that works on disabled object
+		bool canvasManagerFound  = FindObjectOfType<CanvasController>() != null; //TODO other assign that works on disabled object
 		if(!canvasManagerFound)
-			Instantiate(canvasManagerPrefab).GetComponent<CanvasManager>();
+			Instantiate(canvasManagerPrefab).GetComponent<CanvasController>();
 
 		player = FindObjectOfType<Player>();
 		bool playerFound = player != null; 
@@ -50,10 +49,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
 	void Start (){
 		// Initialize Player
-		player.transform.position = Vector3.zero;
 		player.transform.SetParent(Scenario.I.actorArea);
-		player.Initialize();
-		//TODO Start Position
+		player.transform.position = Scenario.I.playerStartPos.YToZ();
 
 		// Initialize Camera
 		Camera.main.transform.SetParent(player.cameraContainer, false);
@@ -66,7 +63,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	protected virtual void StartGame(){
 		startTime = Time.timeSinceLevelLoad;
 		state = GameState.OCURRING;
-		SpawnManager.I.Begin();
+		HiveSpawnManager.I.Begin();
+		HunterSpawnManager.I.Begin();
 	}
 
 	void Update () {
@@ -78,7 +76,20 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 			}
 			// Damage all
 			if (Input.GetKey (KeyCode.E)){
-				//TODO
+				const float radius = 22f;
+				float sqrRadius = radius*radius;
+				List<Destructible> destructibleToDamage = new List<Destructible>();
+				foreach(Destructible destructible in FindObjectsOfType<Destructible>()){
+					if(destructible.team == Team.ALLY)
+						continue;
+
+					Vector3 difference = destructible.transform.position - player.transform.position;
+					bool onRange = difference.XZToV2().sqrMagnitude < sqrRadius;
+					if(onRange)
+						destructibleToDamage.Add(destructible);
+				}
+				foreach(Destructible destructible in destructibleToDamage)
+					destructible.TakeDamage(500);
 			}
 			// Restart
 			if (Input.GetKeyDown (KeyCode.R)){
@@ -109,11 +120,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	/// Ends the game with a Game Over.
 	/// </summary>
 	IEnumerator EndGameRoutine (){
-		if(Debug.isDebugBuild)
-			PrintDebugData();
-
 		state = GameState.END;
 		endTime = Time.timeSinceLevelLoad;
+
+		if(Debug.isDebugBuild)
+			PrintDebugData();
 
 		int timeToSave = SecondsInt;
 		ScoreListTimed scoreList = new ScoreListTimed();
@@ -124,7 +135,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 		ScoreListTimedDrawer.lastScore = timeToSave;
 
 		yield return new WaitForSeconds(2f);
-		CanvasManager.I.DisplayGameOverMenu();
+		CanvasController.I.DisplayGameOverMenu();
 		yield return new WaitForSeconds(3.5f);
 		LoadScene("MainMenu");
 	}
@@ -134,8 +145,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	/// </summary>
 	public void LoadScene(string name=null, float delay = 0f){
 		state = GameState.END; // To make sure that some things like pause aren't called.
-		if(delay != 0f){ //TODO realtime
-			this.Invoke(new WaitForSeconds(delay), () => LoadScene(name));
+		if(delay != 0f){
+			this.Invoke(new WaitForSecondsRealtime(delay), () => LoadScene(name));
 			return;
 		}
 		if(Time.timeScale != currentTimeScale)
@@ -146,12 +157,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 			UnityEngine.SceneManagement.SceneManager.LoadScene(name);
 	}
 
-	void PrintDebugData(){
+	public void PrintDebugData(){
 		int totalSeconds = SecondsInt;
 		string timeString = string.Format("{0}:{1:00}",totalSeconds / 60, totalSeconds % 60);
-		// string poolDebugString = PoolManager.I==null ? "" : PoolManager.I.DebugString();
-		// Debug.LogFormat("[GameManager.End] Time: {0}, TotalScore {1} {2}", timeString, TotalScore, poolDebugString);
-		//TODO spawn
+		string debugMessage = string.Format("Time: {0}. Points: {1}/{2}", timeString, points, score);
+		if(state==GameState.END)
+			debugMessage = "End game! " + debugMessage;
+		Debug.LogFormat("[GameManager.PrintDebugData] {0}", debugMessage);
 	}
 
 	/// <summary>
@@ -161,9 +173,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 		score+=gain;
 		points+=gain;
 
-		bool initializePauseAlert = !CanvasManager.I.pauseAlertInitialized && points >= player.levelSystem.CostForNextLevel(1);
+		bool initializePauseAlert = !CanvasController.I.pauseAlert.initialized && points >= player.levelController.CostForNextLevel(1);
 		if(initializePauseAlert)
-			CanvasManager.I.InitializePauseAlert();
+			CanvasController.I.pauseAlert.Initialize();
 	}
 
 	public void SpendPoint (int point) {
@@ -185,13 +197,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	protected void Pause(){
 		Time.timeScale = 0;
 		if(state == GameState.OCURRING)
-			CanvasManager.I.TogglePauseMenu();
+			CanvasController.I.TogglePauseMenu();
 	}
 	protected void Unpause(){
 		Time.timeScale = currentTimeScale;
-		//TODO
 		if(state == GameState.OCURRING)
-			CanvasManager.I.TogglePauseMenu();
+			CanvasController.I.TogglePauseMenu();
 	}
 	#endregion
 }

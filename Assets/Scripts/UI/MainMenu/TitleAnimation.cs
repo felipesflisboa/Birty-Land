@@ -3,23 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
-/// Title panel who control sprite animations. Just toggle it on.
+/// Title animation who control sprite animations. Just toggle it on.
 /// </summary>
-public class TitlePanel : MonoBehaviour {
-	[System.Serializable] 
-	class AnimationGroup{
-		[SerializeField] Transform [] animationTransformArray; 
-
-		public bool Active{
-			set{
-				foreach(Transform animationTransform in animationTransformArray)
-					animationTransform.gameObject.SetActive(value);
-			}
-		}
-	}
-
+public class TitleAnimation : MonoBehaviour {
 	[SerializeField] Transform animationContainer;
-	[SerializeField] AnimationGroup[] animationGroupArray;
+	[SerializeField] Transform[] animationTransformArray; 
 	int index;
 	Timer spriteTimer;
 
@@ -40,8 +28,8 @@ public class TitlePanel : MonoBehaviour {
 		index = 0;
 		spriteTimer.Reset();
 		animationContainer.gameObject.SetActive(true);
-		foreach(AnimationGroup animationGroup in animationGroupArray)
-			animationGroup.Active = false;
+		foreach(Transform animationTransform in animationTransformArray)
+			animationTransform.gameObject.SetActive(false);
 	}
 
 	void OnDisable(){
@@ -51,13 +39,13 @@ public class TitlePanel : MonoBehaviour {
 
 	void Update(){
 		if(spriteTimer.CheckAndUpdate()){
-			if(index==animationGroupArray.Length){
-				foreach(AnimationGroup animationGroup in animationGroupArray)
-					animationGroup.Active = false;
+			if(index==animationTransformArray.Length){
+				foreach(Transform animationTransform in animationTransformArray)
+					animationTransform.gameObject.SetActive(false);
 			}else{
-				animationGroupArray[index].Active = true;
+				animationTransformArray[index].gameObject.SetActive(true);
 			}
-			index = MathUtil.Repeat(index+1, animationGroupArray.Length+1);
+			index = MathUtil.Repeat(index+1, animationTransformArray.Length+1);
 		}
 	}
 }

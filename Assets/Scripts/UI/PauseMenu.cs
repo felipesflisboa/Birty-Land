@@ -4,15 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour {
+	[SerializeField] AudioSource levelGainSFX;
+	[SerializeField] AudioSource noEnoughPointsSFX;
 	[SerializeField] Text hpLabel;	
 	[SerializeField] Text attackLabel;	
 	[SerializeField] Text speedLabel;
 
-	PlayerLevelSystem levelSystem;
+	PlayerLevelController levelSystem;
 
 	void OnEnable(){
 		if(levelSystem == null && GameManager.I.player != null)
-			levelSystem = GameManager.I.player.levelSystem;
+			levelSystem = GameManager.I.player.levelController;
 		if(levelSystem != null)
 			Refresh();
 	}
@@ -27,7 +29,7 @@ public class PauseMenu : MonoBehaviour {
 		speedLabel.text = string.Format(
 			"Speed Lv{0}\nPay {1} Pts to increase", levelSystem.speedLevel, levelSystem.CostForNextLevel(levelSystem.speedLevel)
 		);
-		CanvasManager.I.hud.Refresh();
+		CanvasController.I.HUD.Refresh();
 	}
 
 	public void RaiseHPLevel(){
@@ -52,14 +54,16 @@ public class PauseMenu : MonoBehaviour {
 	}
 
 	void OnLevelRaised(){
-		//TODO good SFX
+		if(levelGainSFX!=null)
+			levelGainSFX.Play();
 		// Remove selection to won't press again the button when unpausing
 		UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
 		Refresh();
 	}
 
 	void OnLevelFailedRaised(){
-		//TODO bad SFX
+		if(noEnoughPointsSFX!=null)
+			noEnoughPointsSFX.Play();
 		// Remove selection to won't press again the button when unpausing
 		UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
 	}

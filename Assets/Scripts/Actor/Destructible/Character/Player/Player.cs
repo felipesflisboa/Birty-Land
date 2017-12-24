@@ -9,7 +9,8 @@ public class Player : Character {
 	[SerializeField] AudioSource walkingBGM;
 	[SerializeField] AudioSource damageSFX;
 
-	internal PlayerLevelSystem levelSystem;
+	internal PlayerLevelController levelController;
+	Plane groundPlane;
 
 	Timer cursorDetectionTimer;
 	Timer refreshWalkingBGMTimer;
@@ -46,11 +47,7 @@ public class Player : Character {
 	protected override void Awake(){
 		base.Awake();
 		team = Team.ALLY;
-	}
-
-	public override void Initialize(){
-		base.Initialize();
-		levelSystem = new PlayerLevelSystem(this);
+		levelController = new PlayerLevelController(this);
 		bulletTimer = new Timer(bulletCooldown);
 		cursorDetectionTimer = new Timer(CURSOR_DETECTION_INTERVAL);
 		if(walkingBGM!=null)
@@ -75,7 +72,6 @@ public class Player : Character {
 		if(updateRotateContainer){
 			Ray clickRay = Camera.main.ScreenPointToRay(Input.mousePosition); // Only checks first
 			float rayDistance;
-			Plane groundPlane = new Plane(Vector3.down, Vector3.zero); //TODO cache
 			if (groundPlane.Raycast(clickRay, out rayDistance)){
 				Vector3 intersectPos = clickRay.GetPoint(rayDistance);
 				Vector3 difference = intersectPos- transform.position;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Movable destructibles, like enemies and Player.
+/// Base class for movable destructibles, like enemies and Player.
 /// </summary>
 public class Character : Destructible {
 	[SerializeField] float baseSpeed;
@@ -34,19 +34,8 @@ public class Character : Destructible {
 		}
 	}
 
-	/* //remove
-	Animation _animation;
-	public Animation Animation {
-		get {
-			if (_animation == null)
-				_animation = GetComponentInChildren<Animation> ();
-			return _animation;
-		}
-	}
-	*/
-
-	public override void Initialize(){
-		base.Initialize();
+	protected override void Awake(){
+		base.Awake();
 		isMoving = false;
 		Speed = baseSpeed;
 		if(moveAnimation!=null)

@@ -33,13 +33,10 @@ public class Creep : Character {
 		base.Awake();
 		team = Team.ENEMY;
 		refreshTargetTimer = new Timer(0.3f);
-		sqrTriggerHuntMaxDistance = triggerHuntMaxDistance*triggerHuntMaxDistance;
-	}
-
-	public override void Initialize(){
-		base.Initialize();
 		if(collisionCooldown>0f && collisionDamage>0 )
 			collisionTimer = new Timer(collisionCooldown);
+		sqrTriggerHuntMaxDistance = triggerHuntMaxDistance*triggerHuntMaxDistance;
+		Scenario.I.creepList.Add(this);
 	}
 
 	protected override void Update() {
@@ -77,5 +74,10 @@ public class Creep : Character {
 			hunting = true; // Starts hunting, if isn't hunting.
 			collisionTimer.Reset();
 		}
+	}
+
+	public override void Finish(){
+		Scenario.I.creepList.Remove(this);
+		base.Finish();
 	}
 }

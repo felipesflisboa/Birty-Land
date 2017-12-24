@@ -30,10 +30,6 @@ public class Hunter : Character {
 		if(bulletShootPointArray.Length==0)
 			bulletShootPointArray = new []{transform};
 		refreshTargetTimer = new Timer(0.08f);
-	}
-
-	public override void Initialize(){
-		base.Initialize();
 		bulletTimer = new Timer(bulletCooldown);
 	}
 

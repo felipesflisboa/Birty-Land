@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// System for handling player levels.
+/// System for handling player levels gains.
 /// </summary>
 [System.Serializable]
-public class PlayerLevelSystem {
+public class PlayerLevelController {
 	Player player;
 
 	internal int hpLevel;
@@ -17,7 +17,7 @@ public class PlayerLevelSystem {
 	int attackBase;
 	float speedBase;
 
-	public PlayerLevelSystem(Player pPlayer){
+	public PlayerLevelController(Player pPlayer){
 		player = pPlayer;
 
 		hpLevel = 1;

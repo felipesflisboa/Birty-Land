@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
-/// Paged info panel.
+/// Paged text.
 /// </summary>
-public class InfoPanel : MonoBehaviour {
+public class InfoPaged : MonoBehaviour {
 	public RectTransform[] panelArray;
 	int index;
 	Timer clickCooldownTimer;
@@ -27,7 +27,7 @@ public class InfoPanel : MonoBehaviour {
 			index++;
 			bool goToNextScene = index == panelArray.Length;
 			if(goToNextScene)
-				InitialMenuManager.I.EnablePanel(InitialMenuManager.Option.TITLE);
+				MainMenuManager.I.EnablePanel(MainMenuPanelType.TITLE);
 			else
 				RefreshPanels();
 		}

@@ -17,9 +17,9 @@ public class AutoHunter : Hunter {
 		}
 	}
 
-	public override void Initialize () {
+	protected override void Awake () {
 		const int initialMinute = 4;
-		int currentMinute = Mathf.RoundToInt(GameManager.I.SecondsFloat/SpawnManager.SPAWN_HUNTER_INTERVAL);
+		int currentMinute = Mathf.RoundToInt(GameManager.I.SecondsFloat/HunterSpawnManager.SPAWN_INTERVAL);
 		int differenceMinute =  currentMinute - initialMinute;
 
 		scoreValue = 30+10*differenceMinute;
@@ -30,6 +30,6 @@ public class AutoHunter : Hunter {
 		if(SpriteRenderer!=null && spriteMaterialArray.Length>0)
 			SpriteRenderer.material = spriteMaterialArray[differenceMinute%spriteMaterialArray.Length];
 
-		base.Initialize();
+		base.Awake();
 	}
 }
