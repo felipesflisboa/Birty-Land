@@ -237,7 +237,7 @@ MonoBehaviour:
   regenPerSecondRatio: 0
   baseSpeed: 8.5
   moveAnimation: {fileID: 111844482143141236}
-  collisionDamage: 20
+  collisionDamage: 15
   collisionCooldown: 1
   triggerHuntMaxDistance: 12
 --- !u!136 &136536209915487110

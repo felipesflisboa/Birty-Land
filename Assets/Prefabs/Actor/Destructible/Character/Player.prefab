@@ -707,7 +707,7 @@ MonoBehaviour:
   sphereCastRadius: 0.6
   defaultMaxHP: 100
   regenPerSecondRatio: 0.01
-  baseSpeed: 1.5
+  baseSpeed: 2
   moveAnimation: {fileID: 111390246072558554}
   rotateContainer: {fileID: 4887554150106074}
   cameraContainer: {fileID: 4595553039130594}

@@ -42,9 +42,27 @@ public class Player : Character {
 				base.Speed = value;
 			}
 		}
-	}
+    }
 
-	protected override void Awake(){
+    Vector2 _lastInput;
+    Vector2 _lastInputAdjusted;
+    /// <summary>
+    /// Input cached, multiplied by normal.
+    /// </summary>
+    protected Vector2 InputAdjusted {
+        get {
+            Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            if (input != _lastInput) {
+                _lastInput = input;
+                _lastInputAdjusted = input.Multiply(MathUtil.Abs(input.normalized));
+                // Vector2 inputNormalized = input.normalized; //remove
+                // _lastInputNormalizedClamped = new Vector2(Mathf.Min(input.x, inputNormalized.x), Mathf.Min(input.y, inputNormalized.y)); //remove
+            }
+            return _lastInputAdjusted;
+        }
+    }
+
+    protected override void Awake(){
 		base.Awake();
 		team = Team.ALLY;
 		groundPlane = new Plane(Vector3.down, Vector3.zero);
@@ -98,7 +116,7 @@ public class Player : Character {
 		if(!CanAct)
 			return;
 
-		Move(new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical")));
+		Move(InputAdjusted.YToZ());
 	}
 
 	protected Bullet CreateBullet(Transform transformReference){

@@ -148,13 +148,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1534960652013626}
-  m_LocalRotation: {x: 0, y: -0.11320323, z: 0, w: 0.9935719}
+  m_LocalRotation: {x: 0, y: -0.3420201, z: 0, w: 0.9396927}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4854897429660564}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: -13, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -40, z: 0}
 --- !u!4 &4136763542739632
 Transform:
   m_ObjectHideFlags: 1
@@ -246,13 +246,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1067543440812996}
-  m_LocalRotation: {x: 0, y: 0.11320323, z: 0, w: 0.9935719}
+  m_LocalRotation: {x: 0, y: 0.3420201, z: 0, w: 0.9396927}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.9999999, y: 1, z: 0.9999999}
   m_Children: []
   m_Father: {fileID: 4854897429660564}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 13, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 40, z: 0}
 --- !u!23 &23168835312596720
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -485,9 +485,9 @@ MonoBehaviour:
   explosionPrefabArray: []
   scoreValue: 12
   sphereCastRadius: 1
-  defaultMaxHP: 1500
+  defaultMaxHP: 0
   regenPerSecondRatio: 0
-  baseSpeed: 10
+  baseSpeed: 0
   moveAnimation: {fileID: 111795287208707744}
   bulletPrefab: {fileID: 1562015719994462, guid: 4f90484722ea7684980f54208ef546f5,
     type: 2}
@@ -497,9 +497,9 @@ MonoBehaviour:
   - {fileID: 4045225233743424}
   bulletShootSFX: {fileID: 82169257917317434}
   bulletDamage: 60
-  bulletCooldown: 0.5
-  bulletSpeed: 25
-  bulletDuration: 2
+  bulletCooldown: 0.6
+  bulletSpeed: 20
+  bulletDuration: 1.8
   spriteMaterialArray:
   - {fileID: 2100000, guid: 48e5fe07880b9554fb36ff48bc79e546, type: 2}
   - {fileID: 2100000, guid: bfb26aabcf3e64548988dcde10bf9992, type: 2}

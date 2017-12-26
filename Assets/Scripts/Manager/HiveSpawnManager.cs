@@ -16,7 +16,7 @@ public class HiveSpawnManager : SingletonMonoBehaviour<HiveSpawnManager> {
 	const float SPAWN_CHECK_INTERVAL = 5;
 
 	const float MIN_DISTANCE_BETWEEN_HIVES = 12;
-	const float INITIAL_MIN_DISTANCE_BETWEEN_PLAYER = 4;
+	const float INITIAL_MIN_DISTANCE_BETWEEN_PLAYER = 5.5f;
 	const float MIN_DISTANCE_BETWEEN_PLAYER = 15; // After game starts, hives only will spawn outscreen. 
 
 	public void Begin(){

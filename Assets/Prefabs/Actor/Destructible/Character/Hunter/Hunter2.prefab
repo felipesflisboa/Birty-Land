@@ -408,9 +408,9 @@ MonoBehaviour:
   - {fileID: 4519994027418966}
   bulletShootSFX: {fileID: 82309507274955638}
   bulletDamage: 60
-  bulletCooldown: 0.5
-  bulletSpeed: 20
-  bulletDuration: 1.9
+  bulletCooldown: 0.6
+  bulletSpeed: 18
+  bulletDuration: 1.8
 --- !u!212 &212906138588886798
 SpriteRenderer:
   m_ObjectHideFlags: 1
