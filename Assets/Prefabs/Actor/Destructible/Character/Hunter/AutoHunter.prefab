@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 54222323954344022}
   - component: {fileID: 114879888586391720}
   m_Layer: 0
-  m_Name: HunterAuto
+  m_Name: AutoHunter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -55,8 +55,6 @@ public class Player : Character {
             if (input != _lastInput) {
                 _lastInput = input;
                 _lastInputAdjusted = input.Multiply(MathUtil.Abs(input.normalized));
-                // Vector2 inputNormalized = input.normalized; //remove
-                // _lastInputNormalizedClamped = new Vector2(Mathf.Min(input.x, inputNormalized.x), Mathf.Min(input.y, inputNormalized.y)); //remove
             }
             return _lastInputAdjusted;
         }

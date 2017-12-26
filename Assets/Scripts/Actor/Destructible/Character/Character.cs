@@ -37,7 +37,8 @@ public class Character : Destructible {
 	protected override void Awake(){
 		base.Awake();
 		isMoving = false;
-		Speed = baseSpeed;
+        if(baseSpeed!=0f)
+		    Speed = baseSpeed;
 		if(moveAnimation!=null)
 			refreshAnimationTimer = new Timer(0.25f);
 	}
