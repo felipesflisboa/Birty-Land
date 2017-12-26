@@ -22,10 +22,16 @@ public class AutoHunter : Hunter {
 		int currentMinute = Mathf.RoundToInt(GameManager.I.SecondsFloat/HunterSpawnManager.SPAWN_INTERVAL);
 		int differenceMinute =  currentMinute - initialMinute;
 
-		scoreValue = 30+10*differenceMinute;
-		maxHP = 1400 + 600*differenceMinute;
-        Speed = 10.5f + 2.5f*differenceMinute;
-		bulletDamage = 60 + 30*differenceMinute;
+        bool firstAuto = differenceMinute == 0;
+        if (firstAuto) {
+            maxHP = 1500;
+            Speed = 14f;
+        } else {
+            maxHP = 1800 + 600 * differenceMinute;
+            Speed = 16.5f + 0.8f * differenceMinute;
+        }
+        bulletDamage = 120 + 25 * differenceMinute;
+        scoreValue = 30 + 10 * differenceMinute;
 
 		if(SpriteRenderer!=null && spriteMaterialArray.Length>0)
 			SpriteRenderer.material = spriteMaterialArray[differenceMinute%spriteMaterialArray.Length];

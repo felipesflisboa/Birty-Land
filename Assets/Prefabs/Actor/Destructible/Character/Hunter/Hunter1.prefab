@@ -398,7 +398,7 @@ MonoBehaviour:
   explosionPrefabArray: []
   scoreValue: 5
   sphereCastRadius: 0.8
-  defaultMaxHP: 300
+  defaultMaxHP: 250
   regenPerSecondRatio: 0
   baseSpeed: 6.5
   moveAnimation: {fileID: 111914120912965728}

@@ -498,8 +498,8 @@ MonoBehaviour:
   bulletShootSFX: {fileID: 82169257917317434}
   bulletDamage: 60
   bulletCooldown: 0.6
-  bulletSpeed: 20
-  bulletDuration: 1.8
+  bulletSpeed: 25
+  bulletDuration: 1.5
   spriteMaterialArray:
   - {fileID: 2100000, guid: 48e5fe07880b9554fb36ff48bc79e546, type: 2}
   - {fileID: 2100000, guid: bfb26aabcf3e64548988dcde10bf9992, type: 2}

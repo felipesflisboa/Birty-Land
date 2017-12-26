@@ -400,17 +400,17 @@ MonoBehaviour:
   sphereCastRadius: 0.8
   defaultMaxHP: 1200
   regenPerSecondRatio: 0
-  baseSpeed: 10
+  baseSpeed: 13
   moveAnimation: {fileID: 111982848069369594}
   bulletPrefab: {fileID: 1562015719994462, guid: 4f90484722ea7684980f54208ef546f5,
     type: 2}
   bulletShootPointArray:
   - {fileID: 4031537449420164}
   bulletShootSFX: {fileID: 82412641943282356}
-  bulletDamage: 90
+  bulletDamage: 100
   bulletCooldown: 0.6
-  bulletSpeed: 20
-  bulletDuration: 1.8
+  bulletSpeed: 25
+  bulletDuration: 1.5
 --- !u!212 &212152164246954362
 SpriteRenderer:
   m_ObjectHideFlags: 1

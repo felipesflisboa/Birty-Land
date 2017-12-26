@@ -398,7 +398,7 @@ MonoBehaviour:
   explosionPrefabArray: []
   scoreValue: 12
   sphereCastRadius: 0.8
-  defaultMaxHP: 800
+  defaultMaxHP: 750
   regenPerSecondRatio: 0
   baseSpeed: 8.5
   moveAnimation: {fileID: 111047123906899428}
@@ -410,7 +410,7 @@ MonoBehaviour:
   bulletDamage: 60
   bulletCooldown: 0.6
   bulletSpeed: 18
-  bulletDuration: 1.8
+  bulletDuration: 1.6
 --- !u!212 &212906138588886798
 SpriteRenderer:
   m_ObjectHideFlags: 1

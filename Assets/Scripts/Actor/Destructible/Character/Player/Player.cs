@@ -38,7 +38,7 @@ public class Player : Character {
 		set{
 			if(!Mathf.Approximately(Speed, value)){
 				if(walkingBGM!=null)
-					walkingBGM.pitch = Mathf.Clamp(0.6f+value/22f, 0.6f, 1.2f);
+					walkingBGM.pitch = Mathf.Clamp(0.6f+value/30f, 0.6f, 1.2f);
 				base.Speed = value;
 			}
 		}
