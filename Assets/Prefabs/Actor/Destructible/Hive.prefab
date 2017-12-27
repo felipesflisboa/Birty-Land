@@ -214,7 +214,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a94f997e9f347042b14321e85fc9a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionPrefabArray: []
+  explosionPrefabArray:
+  - {fileID: 1699593437590898, guid: 9d4edeca5e661dc4bafeca1ab2ba1dab, type: 2}
   scoreValue: 8
   sphereCastRadius: 1.2
   defaultMaxHP: 150

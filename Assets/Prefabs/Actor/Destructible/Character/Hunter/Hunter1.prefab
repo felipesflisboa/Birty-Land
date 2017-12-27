@@ -73,7 +73,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4228758501729894}
   - component: {fileID: 212834148699302076}
-  - component: {fileID: 111914120912965728}
+  - component: {fileID: 95188625196655340}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -286,7 +286,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: c04c9511c87a258488e3eb531c5deab3, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.15
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -355,21 +355,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!111 &111914120912965728
-Animation:
+--- !u!95 &95188625196655340
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1836499192202890}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 18896ed9d63efe34cb7a83ae6fb0d502, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 18896ed9d63efe34cb7a83ae6fb0d502, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 23e32c4c353aa5b46962cd89d158837e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114371093220834792
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -395,13 +397,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 263ac6a0dc160874ca7397c4e759d5ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionPrefabArray: []
+  explosionPrefabArray:
+  - {fileID: 1699593437590898, guid: 9d4edeca5e661dc4bafeca1ab2ba1dab, type: 2}
   scoreValue: 5
   sphereCastRadius: 0.8
   defaultMaxHP: 250
   regenPerSecondRatio: 0
   baseSpeed: 6.5
-  moveAnimation: {fileID: 111914120912965728}
+  moveAnimation: {fileID: 95188625196655340}
+  moveAnimationMultiplier: 0.35
   bulletPrefab: {fileID: 1562015719994462, guid: 4f90484722ea7684980f54208ef546f5,
     type: 2}
   bulletShootPointArray:

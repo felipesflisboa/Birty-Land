@@ -7,9 +7,10 @@ using UnityEngine;
 /// </summary>
 public class Character : Destructible {
 	[SerializeField] float baseSpeed;
-	[SerializeField] Animation moveAnimation;
+	[Tooltip("Animator with a single move animation as default"), SerializeField] Animator moveAnimation;
+    [SerializeField] float moveAnimationMultiplier = 1f;
 
-	protected bool isMoving{get; private set;}
+    protected bool isMoving{get; private set;}
 
 	Timer refreshAnimationTimer;
 
@@ -21,9 +22,8 @@ public class Character : Destructible {
 		set{
 			if(!Mathf.Approximately(Speed, value)){
 				_speed = value;
-				if(moveAnimation!=null)
-					foreach (AnimationState state in moveAnimation)
-						state.speed = Speed;
+                if (moveAnimation != null)
+                    moveAnimation.speed = Speed* moveAnimationMultiplier;
 			}
 		}
 	}
@@ -47,13 +47,9 @@ public class Character : Destructible {
 		base.Update();
 
 		if(refreshAnimationTimer!=null && refreshAnimationTimer.CheckAndUpdate()){
-			if(isMoving){
-				if(!moveAnimation.isPlaying)
-					moveAnimation.Play();
-			}else{
-				if(moveAnimation.isPlaying)
-					moveAnimation.Stop();
-			}
+            bool changed = moveAnimation.enabled != isMoving;
+            if(changed)
+                moveAnimation.enabled = isMoving;
 		}
 	}
 

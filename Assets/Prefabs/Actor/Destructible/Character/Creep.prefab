@@ -36,7 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4011536737666360}
   - component: {fileID: 212378654401329104}
-  - component: {fileID: 111844482143141236}
+  - component: {fileID: 95851676276918172}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -190,21 +190,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!111 &111844482143141236
-Animation:
+--- !u!95 &95851676276918172
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1191405785781192}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 18896ed9d63efe34cb7a83ae6fb0d502, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 18896ed9d63efe34cb7a83ae6fb0d502, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 23e32c4c353aa5b46962cd89d158837e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114371093220834792
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -230,13 +232,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d360cd50bc621a4fb9ac9c2100728c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionPrefabArray: []
+  explosionPrefabArray:
+  - {fileID: 1618734973931954, guid: cd3bf9edb8abdd449a35d8471d4061dd, type: 2}
   scoreValue: 1
   sphereCastRadius: 0.3
   defaultMaxHP: 30
   regenPerSecondRatio: 0
   baseSpeed: 8.5
-  moveAnimation: {fileID: 111844482143141236}
+  moveAnimation: {fileID: 95851676276918172}
+  moveAnimationMultiplier: 0.5
   collisionDamage: 15
   collisionCooldown: 1
   triggerHuntMaxDistance: 12
