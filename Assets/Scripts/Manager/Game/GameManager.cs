@@ -76,7 +76,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 			}
 			// Damage all
 			if (Input.GetKey (KeyCode.E)){
-				const float radius = 22f;
+				const float radius = 16f;
 				float sqrRadius = radius*radius;
 				List<Destructible> destructibleToDamage = new List<Destructible>();
 				foreach(Destructible destructible in FindObjectsOfType<Destructible>()){
