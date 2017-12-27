@@ -31,7 +31,7 @@ public class HUD : MonoBehaviour {
 			hpText.text = string.Format("{0}|{1}", GameManager.I.player.hp, GameManager.I.player.maxHP);
 		}
 		if(scoreText != null){
-			scoreText.text = string.Format("{0}|{1}", GameManager.I.points, GameManager.I.score);
+			scoreText.text = string.Format("{0}", GameManager.I.points);
 		}
 		if(timeText != null){
 			int totalSeconds = GameManager.I.SecondsInt;

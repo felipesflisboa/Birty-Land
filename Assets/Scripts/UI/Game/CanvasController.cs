@@ -8,10 +8,13 @@ using UnityEngine.UI;
 /// </summary>
 public class CanvasController : SingletonMonoBehaviour<CanvasController> {
 	[SerializeField] RectTransform gameOverRect;
-	[SerializeField] RectTransform pauseRect;
-	public PauseAlert pauseAlert;
+    [SerializeField] RectTransform pauseRect;
+    [SerializeField] RectTransform exitDialogRect;
+    [SerializeField] RectTransform initialAlertRect;
+    public PauseAlert pauseAlert;
+    public ExitDialog exitDialog;
 
-	Canvas _canvas;
+    Canvas _canvas;
 	public Canvas Canvas {
 		get {
 			if (_canvas == null)
@@ -36,7 +39,14 @@ public class CanvasController : SingletonMonoBehaviour<CanvasController> {
 			pauseRect.gameObject.SetActive(false);
 		if(pauseAlert!=null)
 			pauseAlert.gameObject.SetActive(false);
-	}
+        if (exitDialog != null)
+            exitDialog.gameObject.SetActive(false);
+
+        if (initialAlertRect != null) {
+            initialAlertRect.gameObject.SetActive(true);
+            this.Invoke(new WaitForSeconds(2.5f), () => initialAlertRect.gameObject.SetActive(false));
+        }
+    }
 
 	public void DisplayGameOverMenu (){
 		gameOverRect.gameObject.SetActive(true);
