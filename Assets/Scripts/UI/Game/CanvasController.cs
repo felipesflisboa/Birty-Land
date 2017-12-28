@@ -7,10 +7,13 @@ using UnityEngine.UI;
 /// Handle the Canvas on game.
 /// </summary>
 public class CanvasController : SingletonMonoBehaviour<CanvasController> {
-	[SerializeField] RectTransform gameOverRect;
-    [SerializeField] RectTransform pauseRect;
+    [Tooltip("To activate if mobile."), SerializeField] RectTransform[] mobileRectArray;
+    [Tooltip("To deactivate if mobile."),SerializeField] RectTransform[] nonMobileRectArray;
+    [SerializeField] PauseMenu pauseMenu;
+    [SerializeField] RectTransform gameOverRect;
     [SerializeField] RectTransform exitDialogRect;
     [SerializeField] RectTransform initialAlertRect;
+    public Button pauseButton;
     public PauseAlert pauseAlert;
     public ExitDialog exitDialog;
 
@@ -30,13 +33,13 @@ public class CanvasController : SingletonMonoBehaviour<CanvasController> {
 				_hud = GetComponentInChildren<HUD> ();
 			return _hud;
 		}
-	}
+    }
 
-	void Start(){
-		if(gameOverRect!=null)
+    void Start() {
+        if (pauseMenu != null)
+            pauseMenu.gameObject.SetActive(false);
+        if (gameOverRect!=null)
 			gameOverRect.gameObject.SetActive(false);
-		if(pauseRect!=null)
-			pauseRect.gameObject.SetActive(false);
 		if(pauseAlert!=null)
 			pauseAlert.gameObject.SetActive(false);
         if (exitDialog != null)
@@ -46,14 +49,24 @@ public class CanvasController : SingletonMonoBehaviour<CanvasController> {
             initialAlertRect.gameObject.SetActive(true);
             this.Invoke(new WaitForSeconds(2.5f), () => initialAlertRect.gameObject.SetActive(false));
         }
+
+        foreach (RectTransform rectTransform in mobileRectArray)
+            rectTransform.gameObject.SetActive(GameManager.I.UseTouchControls);
+        foreach (RectTransform rectTransform in nonMobileRectArray)
+            rectTransform.gameObject.SetActive(!GameManager.I.UseTouchControls);
     }
 
 	public void DisplayGameOverMenu (){
 		gameOverRect.gameObject.SetActive(true);
 	}
 
-	public void TogglePauseMenu (){
-		pauseRect.gameObject.SetActive(!pauseRect.gameObject.activeSelf);
+    public void TryToTogglePause() {
+        if(!exitDialog.gameObject.activeSelf)
+            GameManager.I.TryToTogglePause();
+    }
+
+    public void TogglePauseMenu (){
+        pauseMenu.gameObject.SetActive(!pauseMenu.gameObject.activeSelf);
 		pauseAlert.gameObject.SetActive(false);
 	}
 }

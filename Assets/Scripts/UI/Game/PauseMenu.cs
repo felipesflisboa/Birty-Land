@@ -9,10 +9,21 @@ public class PauseMenu : MonoBehaviour {
 	[SerializeField] Text hpLabel;	
 	[SerializeField] Text attackLabel;	
 	[SerializeField] Text speedLabel;
+    [SerializeField] Text autoFireLabel;
+    //remove
+ //   [SerializeField] RectTransform mobileTopRect;
+ //   [SerializeField] RectTransform nonMobileTopRect;
 
-	PlayerLevelController levelSystem;
+    PlayerLevelController levelSystem;
 
-	void OnEnable(){
+    /* //remove
+    void Start() {
+        mobileTopRect.gameObject.SetActive(GameManager.I.UseTouchControls);
+        nonMobileTopRect.gameObject.SetActive(!GameManager.I.UseTouchControls);
+    }
+    */
+
+    void OnEnable(){
 		if(levelSystem == null && GameManager.I.player != null)
 			levelSystem = GameManager.I.player.levelController;
 		if(levelSystem != null)
@@ -29,10 +40,16 @@ public class PauseMenu : MonoBehaviour {
 		speedLabel.text = string.Format(
 			"Speed Lv{0}\nPay {1} Pts to increase", levelSystem.speedLevel, levelSystem.CostForNextLevel(levelSystem.speedLevel)
 		);
-		CanvasController.I.HUD.Refresh();
-	}
+        autoFireLabel.text = string.Format("Fire {0}", GameManager.I.autoFire ? "ON": "OFF");
+        CanvasController.I.HUD.Refresh();
+    }
 
-	public void RaiseHPLevel(){
+    public void ToggleAutoFire() {
+        GameManager.I.autoFire = !GameManager.I.autoFire;
+        Refresh();
+    }
+
+    public void RaiseHPLevel(){
 		if(levelSystem.RaiseHPLevel())
 			OnLevelRaised();
 		else

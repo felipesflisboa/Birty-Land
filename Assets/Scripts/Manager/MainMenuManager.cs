@@ -1,10 +1,19 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
+    [SerializeField] Text versionLabel;
+
 	MainMenuPanelType currentPanelOption;
 	MainMenuPanel[] panelArray;
 	Timer clickCooldownTimer;
+
+    string Version {
+        get {
+            return "Version 1.0.1";
+        }
+    }
 
 	void Start () {
 		clickCooldownTimer = new Timer(0.75f);
@@ -15,7 +24,11 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
 
 		MainMenuPanelType newPanelOption = hasScore ? MainMenuPanelType.HIGH_SCORES : MainMenuPanelType.TITLE;
 		EnablePanel(newPanelOption);
-	}
+
+        versionLabel.text = Version;
+
+        System.GC.Collect(); // Clear game no more used memory.
+    }
 
 	public void EnablePanel(MainMenuPanelType panelOption){
 		currentPanelOption = panelOption;

@@ -10,9 +10,9 @@ public class Player : Character {
 	[SerializeField] AudioSource damageSFX;
 
 	internal PlayerLevelController levelController;
-	Plane groundPlane;
+    float sqrMinClickDistanceByMovement;
 
-	Timer cursorDetectionTimer;
+    Timer aimDetectionTimer;
 	Timer refreshWalkingBGMTimer;
 
 	[Header("Bullet")]
@@ -25,10 +25,18 @@ public class Player : Character {
 	[SerializeField] float bulletDuration;
 	Timer bulletTimer;
 
-	const float CURSOR_DETECTION_INTERVAL = 0.1f;
-	const float REFRESH_WALKING_BGM_INTERVAL = 0.1f;
+    // AutoAim
+    float sqrAutoAimMaxDistance;
+    Timer autoAimTimer;
+    Destructible target;
 
-	protected override bool AutoClampPos {
+    const float CURSOR_DETECTION_INTERVAL = 0.1f;
+	const float REFRESH_WALKING_BGM_INTERVAL = 0.1f;
+    const float AUTO_AIM_INTERVAL = 0.2f;
+    const float AUTO_AIM_MAX_DISTANCE = 15f;
+    const float MIN_CLICK_DISTANCE_BY_MOVEMENT = 0.5f;
+
+    protected override bool AutoClampPos {
 		get {
 			return true;
 		}
@@ -63,40 +71,82 @@ public class Player : Character {
     protected override void Awake(){
 		base.Awake();
 		team = Team.ALLY;
-		groundPlane = new Plane(Vector3.down, Vector3.zero);
-		levelController = new PlayerLevelController(this);
+
+        sqrAutoAimMaxDistance = AUTO_AIM_MAX_DISTANCE * AUTO_AIM_MAX_DISTANCE;
+        sqrMinClickDistanceByMovement = MIN_CLICK_DISTANCE_BY_MOVEMENT * MIN_CLICK_DISTANCE_BY_MOVEMENT;
+
+        levelController = new PlayerLevelController(this);
+
 		bulletTimer = new Timer(bulletCooldown);
-		cursorDetectionTimer = new Timer(CURSOR_DETECTION_INTERVAL);
-		if(walkingBGM!=null)
+		aimDetectionTimer = new Timer(CURSOR_DETECTION_INTERVAL);
+        if(GameManager.I.UseTouchControls)
+            autoAimTimer = new Timer(AUTO_AIM_INTERVAL);
+        // refreshDestructibleArrayTimer = new Timer(REFRESH_DESTRUCTIBLE_ARRAY); //remove
+
+        if (walkingBGM!=null)
 			refreshWalkingBGMTimer = new Timer(REFRESH_WALKING_BGM_INTERVAL);
 	}
 
-	protected override void Update() {
+    protected override void Update() {
 		base.Update();
 
 		if(!CanAct)
 			return;
-		
-		if(Input.GetButton("Fire1") && !GameManager.I.Paused && bulletTimer.Check()){
-			if(bulletShootSFX!=null)
-				bulletShootSFX.Play();
-			CreateBullet(bulletShootPoint);
-			Scenario.I.NotifyCreepsNearNeedRefresh();
-			bulletTimer.Reset();
-		}
 
-		bool updateRotateContainer = cursorDetectionTimer==null || cursorDetectionTimer.CheckAndUpdate();
-		if(updateRotateContainer){
-			Ray clickRay = Camera.main.ScreenPointToRay(Input.mousePosition); // Only checks first
-			float rayDistance;
-			if (groundPlane.Raycast(clickRay, out rayDistance)){
-				Vector3 intersectPos = clickRay.GetPoint(rayDistance);
-				Vector3 difference = intersectPos- transform.position;
-				rotateContainer.localEulerAngles = MathUtil.GetAngle(difference.x,difference.z)*Vector3.up;
-			}
-		}
+        //remove
+        // bool autoAim = true;
+        // if (autoAim) {
+            //remove
+            // if (refreshDestructibleArrayTimer.CheckAndUpdate()) {
+            //    gameDestructibleArray = Scenario;
+            // }
+        // }
 
-		if(refreshWalkingBGMTimer!=null && (refreshWalkingBGMTimer.CheckAndUpdate() || GameManager.I.Paused)){
+        if (autoAimTimer!= null && autoAimTimer.CheckAndUpdate()) {
+            Destructible lastTarget = target;
+            target = null;
+            float sqrLowerDistance = sqrAutoAimMaxDistance;
+            // Checks all destructible to find out the nearst one
+            foreach (Destructible destructible in Scenario.I.destructibleList) {
+                if (destructible==null || !destructible.Alive || destructible.team==team)
+                    continue;
+                float sqrDistance = (destructible.transform.position - transform.position).XZToV2().sqrMagnitude;
+                if (sqrLowerDistance > sqrDistance) {
+                    sqrLowerDistance = sqrDistance;
+                    target = destructible;
+                }
+            }
+            bool forceRotateRefresh = target != lastTarget && target != null;
+            if (forceRotateRefresh)
+                aimDetectionTimer.MarkDone();
+        }
+
+        bool updateRotateContainer = aimDetectionTimer.CheckAndUpdate();
+        if (updateRotateContainer) {
+            Vector2 difference = Vector2.zero;
+            if (GameManager.I.UseTouchControls) {
+                if(target!=null && target.Alive)
+                    difference = (target.transform.position - transform.position).XZToV2();
+            } else {
+                GameManager.I.RefreshClickPosition();
+                difference = GameManager.I.lastClickWorldPos - transform.position.XZToV2();
+            }
+
+            if(difference != Vector2.zero)
+                rotateContainer.localEulerAngles = MathUtil.GetAngle(difference) * Vector3.up;
+        }
+
+        bool fire = GameManager.I.UseTouchControls ? (GameManager.I.autoFire && target != null) : Input.GetButton("Fire1");
+        fire = fire && !GameManager.I.Paused && bulletTimer.Check();
+        if (fire) {
+            if (bulletShootSFX != null)
+                bulletShootSFX.Play();
+            CreateBullet(bulletShootPoint);
+            Scenario.I.NotifyCreepsNearNeedRefresh();
+            bulletTimer.Reset();
+        }
+
+        if (refreshWalkingBGMTimer!=null && (refreshWalkingBGMTimer.CheckAndUpdate() || GameManager.I.Paused)){
 			bool playWalkingBGM = isMoving && !GameManager.I.Paused;
 			if(playWalkingBGM){
 				if(!walkingBGM.isPlaying)
@@ -114,10 +164,17 @@ public class Player : Character {
 		if(!CanAct)
 			return;
 
-		Move(InputAdjusted.YToZ());
-	}
+        if (GameManager.I.UseTouchControls) {
+            GameManager.I.RefreshClickPosition();
+            Vector2 clickDifference = GameManager.I.lastClickWorldPos - transform.position.XZToV2();
+            if(sqrMinClickDistanceByMovement < clickDifference.sqrMagnitude)
+                Move(clickDifference.normalized.YToZ());
+        } else {
+            Move(InputAdjusted.YToZ());
+        }
+    }
 
-	protected Bullet CreateBullet(Transform transformReference){
+    protected Bullet CreateBullet(Transform transformReference){
 		Bullet bullet = Instantiate(bulletPrefab, transformReference.position, transformReference.rotation).GetComponent<Bullet>();
 		bullet.transform.SetParent(Scenario.I.actorArea);
 		bullet.InitializeBullet(this, bulletDamage, bulletSpeed, bulletDuration);

@@ -15,7 +15,23 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	protected float endTime;
 	float currentTimeScale;
 
-	public bool Paused{
+    internal bool autoFire;
+    internal Vector2 lastClickWorldPos;
+    Plane groundPlane = new Plane(Vector3.down, Vector3.zero);
+
+    public bool UseTouchControls {
+        get {
+#if UNITY_ANDROID || UNITY_IOS || FORCE_MOBILE_CONTROL
+            return true;
+#elif UNITY_WEBGL
+            return WebGLMobileCheck.IsMobile;
+#else
+            return false;
+#endif
+        }
+    }
+
+    public bool Paused{
 		get{
 			return Time.timeScale == 0f;
 		}
@@ -44,7 +60,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 		if(!playerFound)
 			player = Instantiate(playerPrefab).GetComponent<Player>();
 
-		currentTimeScale = Time.timeScale;
+        lastClickWorldPos = Scenario.I.playerStartPos;
+        if (UseTouchControls)
+            autoFire = true;
+
+        currentTimeScale = Time.timeScale;
 	}
 
 	void Start (){
@@ -52,12 +72,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 		player.transform.SetParent(Scenario.I.actorArea);
 		player.transform.position = Scenario.I.playerStartPos.YToZ();
 
-		// Initialize Camera
-		Camera.main.transform.SetParent(player.cameraContainer, false);
+        // Initialize Camera
+        Camera.main.transform.SetParent(player.cameraContainer, false);
 		Camera.main.transform.localPosition = Vector3.zero;
 		Camera.main.transform.localRotation = Quaternion.identity;
-
-		StartGame();
+        
+        StartGame();
 	}
 
 	protected virtual void StartGame(){
@@ -105,9 +125,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 		}
 	}
 
-	protected virtual void OnEscapePress(){
-		// LoadScene(LobbyMenu.lobbyMenuSceneName); //TODO
-	}
+	public void BackToMainMenu() {
+        LoadScene("MainMenu");
+    }
 
 	/// <summary>
 	/// Ends the game with a Game Over.
@@ -137,8 +157,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 		yield return new WaitForSeconds(2f);
 		CanvasController.I.DisplayGameOverMenu();
 		yield return new WaitForSeconds(3.5f);
-		LoadScene("MainMenu");
-	}
+        BackToMainMenu();
+    }
 
 	/// <summary>
 	/// Loads other scene. When name is null or empty, load self.
@@ -181,9 +201,19 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	public void SpendPoint (int point) {
 		points-=point;
 	}
+    
+    public void RefreshClickPosition() {
+        Vector3 mousePosition = Input.mousePosition;
+        if (mousePosition != Vector3.zero) {
+            Ray clickRay = Camera.main.ScreenPointToRay(Input.mousePosition); // Only checks first
+            float rayDistance;
+            if (groundPlane.Raycast(clickRay, out rayDistance))
+                lastClickWorldPos = clickRay.GetPoint(rayDistance).XZToV2();
+        }
+    }
 
-	#region Pause
-	public void TryToTogglePause(){
+#region Pause
+    public void TryToTogglePause(){
 		if(state != GameState.OCURRING)
 			return;
 		TogglePause();
@@ -204,5 +234,5 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 		if(state == GameState.OCURRING)
 			CanvasController.I.TogglePauseMenu();
 	}
-	#endregion
+#endregion
 }

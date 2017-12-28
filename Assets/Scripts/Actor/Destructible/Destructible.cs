@@ -36,7 +36,8 @@ public class Destructible : Actor {
 			hp = maxHP;
 		}
 		regenCount = 0f;
-	}
+        Scenario.I.destructibleList.Add(this);
+    }
 
 	protected override void Update(){
 		base.Update();
@@ -63,4 +64,9 @@ public class Destructible : Actor {
 		GameManager.I.AddScore(scoreValue);
 		base.Explode();
 	}
+
+    public override void Finish() {
+        Scenario.I.destructibleList.Remove(this);
+        base.Finish();
+    }
 }

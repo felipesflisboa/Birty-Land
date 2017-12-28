@@ -8,7 +8,8 @@ public class Scenario : SingletonMonoBehaviour<Scenario> {
 	public Vector2 playerStartPos;
 	public Transform actorArea;
 
-	readonly internal List<Creep> creepList = new List<Creep>();
+    readonly internal List<Destructible> destructibleList = new List<Destructible>();
+    readonly internal List<Creep> creepList = new List<Creep>();
 
 	bool refreshNotifyCreeps;
 	Timer notifyCreepsRefreshTimer;
