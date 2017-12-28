@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4750356371489386}
   - component: {fileID: 212860344195889926}
-  - component: {fileID: 111934396670821352}
+  - component: {fileID: 95080005792618836}
   m_Layer: 0
   m_Name: Birty
   m_TagString: Untagged
@@ -41,21 +41,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!111 &111934396670821352
-Animation:
+--- !u!95 &95080005792618836
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1472306486802856}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 18896ed9d63efe34cb7a83ae6fb0d502, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 18896ed9d63efe34cb7a83ae6fb0d502, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 23e32c4c353aa5b46962cd89d158837e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!212 &212860344195889926
 SpriteRenderer:
   m_ObjectHideFlags: 1
