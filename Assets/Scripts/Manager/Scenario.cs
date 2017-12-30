@@ -29,7 +29,7 @@ public class Scenario : SingletonMonoBehaviour<Scenario> {
 	public Rect RectWithoutBorder {
 		get {
 			if (_rectWithoutBorder.width==0f)
-				_rectWithoutBorder = new Rect(Scenario.I.Rect.min + border*Vector2.one, Scenario.I.Rect.size - 2*border*Vector2.one);;
+				_rectWithoutBorder = new Rect(Rect.min + border*Vector2.one, Rect.size - 2*border*Vector2.one);;
 			return _rectWithoutBorder;
 		}
 	}
@@ -102,7 +102,7 @@ public class Scenario : SingletonMonoBehaviour<Scenario> {
 
 	void OnDrawGizmos() {
 		Gizmos.color = new Color(0.2f,0.6f, 0.6f, 0.75f);
-		Gizmos.DrawWireCube (transform.position, (size - Vector2.one*border).YToZ());
+		Gizmos.DrawWireCube (transform.position, (size - Vector2.one*border*2).YToZ());
 		Gizmos.color = new Color(0.2f,1f, 0.2f, 0.75f);
 		Gizmos.DrawWireCube (transform.position, size.YToZ());
 	}
