@@ -87,6 +87,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4854897429660564}
+  - component: {fileID: 114440085725080058}
   - component: {fileID: 82169257917317434}
   m_Layer: 0
   m_Name: Weapon
@@ -473,6 +474,28 @@ MonoBehaviour:
   definedColor: {r: 1, g: 0.4344827, b: 0, a: 1}
   setInChildren: 1
   totalTime: 0
+--- !u!114 &114440085725080058
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1331294782556684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e12fb34e61256934ab97165a96a4e64f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfx: {fileID: 82169257917317434}
+  bulletPrefab: {fileID: 1562015719994462, guid: 4f90484722ea7684980f54208ef546f5,
+    type: 2}
+  bulletShootPointArray:
+  - {fileID: 4136763542739632}
+  - {fileID: 4985983919771078}
+  - {fileID: 4045225233743424}
+  damage: 0
+  cooldown: 0.6
+  bulletSpeed: 30
+  bulletDuration: 1.3
 --- !u!114 &114879888586391720
 MonoBehaviour:
   m_ObjectHideFlags: 1

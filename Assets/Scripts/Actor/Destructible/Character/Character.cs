@@ -10,6 +10,8 @@ public class Character : Destructible {
 	[Tooltip("Animator with a single move animation as default"), SerializeField] Animator moveAnimation;
     [SerializeField] float moveAnimationMultiplier = 1f;
 
+    protected Weapon weapon;
+
     protected bool isMoving{get; private set;}
 
 	Timer refreshAnimationTimer;
@@ -36,12 +38,17 @@ public class Character : Destructible {
 
 	protected override void Awake(){
 		base.Awake();
+
 		isMoving = false;
         if(baseSpeed!=0f)
 		    Speed = baseSpeed;
 		if(moveAnimation!=null)
 			refreshAnimationTimer = new Timer(0.25f);
-	}
+
+        weapon = GetComponentInChildren<Weapon>();
+        if (weapon != null)
+            weapon.Initialize(this);
+    }
 
 	protected override void Update() {
 		base.Update();

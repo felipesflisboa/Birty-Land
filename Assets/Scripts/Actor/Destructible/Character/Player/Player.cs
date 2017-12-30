@@ -15,16 +15,6 @@ public class Player : Character {
     Timer aimDetectionTimer;
 	Timer refreshWalkingBGMTimer;
 
-	[Header("Bullet")]
-	[SerializeField] GameObject bulletPrefab;
-	[SerializeField] Transform bulletShootPoint;
-	[SerializeField] AudioSource bulletShootSFX;
-	public int bulletDamage;
-	[SerializeField] float bulletCooldown;
-	[SerializeField] float bulletSpeed;
-	[SerializeField] float bulletDuration;
-	Timer bulletTimer;
-
     // AutoAim
     float sqrAutoAimMaxDistance;
     Timer autoAimTimer;
@@ -41,6 +31,15 @@ public class Player : Character {
 			return true;
 		}
 	}
+
+    public int Damage {
+        get {
+            return weapon.damage;
+        }
+        set {
+            weapon.damage = value;
+        }
+    }
 
 	public override float Speed{
 		set{
@@ -76,8 +75,7 @@ public class Player : Character {
         sqrMinClickDistanceByMovement = MIN_CLICK_DISTANCE_BY_MOVEMENT * MIN_CLICK_DISTANCE_BY_MOVEMENT;
 
         levelController = new PlayerLevelController(this);
-
-		bulletTimer = new Timer(bulletCooldown);
+        
 		aimDetectionTimer = new Timer(CURSOR_DETECTION_INTERVAL);
         if(GameManager.I.UseTouchControls)
             autoAimTimer = new Timer(AUTO_AIM_INTERVAL);
@@ -137,13 +135,10 @@ public class Player : Character {
         }
 
         bool fire = GameManager.I.UseTouchControls ? (GameManager.I.autoFire && target != null) : Input.GetButton("Fire1");
-        fire = fire && !GameManager.I.Paused && bulletTimer.Check();
+        fire = fire && !GameManager.I.Paused && weapon.CanFire;
         if (fire) {
-            if (bulletShootSFX != null)
-                bulletShootSFX.Play();
-            CreateBullet(bulletShootPoint);
+            weapon.FirePress();
             Scenario.I.NotifyCreepsNearNeedRefresh();
-            bulletTimer.Reset();
         }
 
         if (refreshWalkingBGMTimer!=null && (refreshWalkingBGMTimer.CheckAndUpdate() || GameManager.I.Paused)){
@@ -173,13 +168,6 @@ public class Player : Character {
             Move(InputAdjusted.YToZ());
         }
     }
-
-    protected Bullet CreateBullet(Transform transformReference){
-		Bullet bullet = Instantiate(bulletPrefab, transformReference.position, transformReference.rotation).GetComponent<Bullet>();
-		bullet.transform.SetParent(Scenario.I.actorArea);
-		bullet.InitializeBullet(this, bulletDamage, bulletSpeed, bulletDuration);
-		return bullet;
-	}
 
 	public override void TakeDamage(int damage){
 		base.TakeDamage(damage);

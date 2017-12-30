@@ -25,7 +25,7 @@ public class PlayerLevelController {
 		speedLevel = 1;
 
 		hpBase = player.maxHP;
-		attackBase = player.bulletDamage;
+		attackBase = player.Damage;
 		speedBase = player.Speed;
 	}
 
@@ -34,7 +34,7 @@ public class PlayerLevelController {
 	/// </summary>
 	void RefreshValues(){
 		player.maxHP = hpBase*hpLevel;
-		player.bulletDamage = attackBase*attackLevel;
+		player.Damage = attackBase*attackLevel;
 		player.Speed = speedBase*speedLevel;
 	}
 

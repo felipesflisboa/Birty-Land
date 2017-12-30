@@ -71,6 +71,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4298861279506036}
   - component: {fileID: 212618393946141906}
+  - component: {fileID: 114801832800172206}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -216,6 +217,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionPrefabArray:
   - {fileID: 1699593437590898, guid: 69f09c6603caf844db06e01b2f59a3f5, type: 2}
+--- !u!114 &114801832800172206
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1955907808971726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a18987df5cbd1944b1f7ec9f18804fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  retainOriginalPosition: 0
+  globalEuler: {x: 90, y: 0, z: 0}
 --- !u!135 &135014613764315196
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -242,7 +256,7 @@ SpriteRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 909e69e02adbed0489237d847ada9ff8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

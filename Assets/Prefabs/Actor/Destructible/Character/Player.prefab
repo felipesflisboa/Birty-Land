@@ -86,9 +86,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4990302089221826}
+  - component: {fileID: 114211079197243876}
   - component: {fileID: 82981071438219236}
   m_Layer: 0
-  m_Name: ShootPoint
+  m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -679,6 +680,25 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114211079197243876
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1354124038966844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e12fb34e61256934ab97165a96a4e64f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfx: {fileID: 82981071438219236}
+  bulletPrefab: {fileID: 1562015719994462, guid: 4f90484722ea7684980f54208ef546f5,
+    type: 2}
+  bulletShootPointArray: []
+  damage: 10
+  cooldown: 0.3
+  bulletSpeed: 16
+  bulletDuration: 0.5
 --- !u!114 &114371093220834792
 MonoBehaviour:
   m_ObjectHideFlags: 1

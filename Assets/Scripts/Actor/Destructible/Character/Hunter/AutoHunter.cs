@@ -30,12 +30,14 @@ public class AutoHunter : Hunter {
             maxHP = 1800 + 600 * differenceMinute;
             Speed = 16.5f + 0.8f * differenceMinute;
         }
-        bulletDamage = 120 + 25 * differenceMinute;
+        int damage = 120 + 25 * differenceMinute;
         scoreValue = 30 + 10 * differenceMinute;
 
 		if(SpriteRenderer!=null && spriteMaterialArray.Length>0)
 			SpriteRenderer.material = spriteMaterialArray[differenceMinute%spriteMaterialArray.Length];
 
 		base.Awake();
-	}
+
+        weapon.damage = damage;
+    }
 }

@@ -6,15 +6,7 @@ using UnityEngine;
 /// Enemy spawned every X seconds who hunts the player.
 /// </summary>
 public class Hunter : Character {
-	[Header("Bullet")]
-	[SerializeField] GameObject bulletPrefab;
-	[SerializeField, Tooltip("When empty, uses self")] Transform[] bulletShootPointArray;
-	[SerializeField] AudioSource bulletShootSFX;
-	public int bulletDamage;
-	[SerializeField] protected float bulletCooldown;
-	[SerializeField] protected float bulletSpeed;
-	[SerializeField] protected float bulletDuration;
-	Timer bulletTimer;
+    float sqrMaxDistanceToShoot;
 
 	Timer refreshTargetTimer;
 
@@ -27,25 +19,26 @@ public class Hunter : Character {
 	protected override void Awake(){
 		base.Awake();
 		team = Team.ENEMY;
-		if(bulletShootPointArray.Length==0)
-			bulletShootPointArray = new []{transform};
-		refreshTargetTimer = new Timer(0.08f);
-		bulletTimer = new Timer(bulletCooldown);
-	}
+		refreshTargetTimer = new Timer(0.08f);;
+    }
 
-	protected override void Update() {
+    protected override void Start() {
+        base.Start();
+        sqrMaxDistanceToShoot = Mathf.Pow(weapon.bulletSpeed * weapon.bulletDuration + 10f, 2);
+    }
+
+    protected override void Update() {
 		base.Update();
 
 		if(!CanAct)
 			return;
-
-		if(bulletTimer.Check()){
-			if(bulletShootSFX!=null)
-				bulletShootSFX.Play();
-			foreach(Transform shootPoint in bulletShootPointArray)
-				CreateBullet(shootPoint);
-			Scenario.I.NotifyCreepsNearNeedRefresh();
-			bulletTimer.Reset();
+        
+		if(weapon.CanFire) {
+            Vector2 difference = (GameManager.I.player.transform.position - transform.position).XZToV2();
+            if (sqrMaxDistanceToShoot > difference.sqrMagnitude) {
+                weapon.FirePress();
+                Scenario.I.NotifyCreepsNearNeedRefresh();
+            }
 		}
 
 		if(refreshTargetTimer.CheckAndUpdate()){
@@ -59,12 +52,5 @@ public class Hunter : Character {
 		if(!CanAct)
 			return;
 		Move(transform.forward);
-	}
-
-	protected Bullet CreateBullet(Transform transformReference){
-		Bullet bullet = Instantiate(bulletPrefab, transformReference.position, transformReference.rotation).GetComponent<Bullet>();
-		bullet.transform.SetParent(Scenario.I.actorArea);
-		bullet.InitializeBullet(this, bulletDamage, bulletSpeed, bulletDuration);
-		return bullet;
 	}
 }
