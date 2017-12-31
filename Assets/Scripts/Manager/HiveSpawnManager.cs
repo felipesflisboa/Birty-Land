@@ -20,8 +20,6 @@ public class HiveSpawnManager : SingletonMonoBehaviour<HiveSpawnManager> {
 	const float MIN_DISTANCE_BETWEEN_PLAYER = 15; // After game starts, hives only will spawn outscreen. 
 
 	public void Begin(){
-		const float border = 7f; // So won't spawn hives on borders 
-
 		List<Hive> hiveList = new List<Hive>();
 		for (int i = 0; i < QUANTITY; i++)
 			hiveList.Add(Spawn(hiveList, true));

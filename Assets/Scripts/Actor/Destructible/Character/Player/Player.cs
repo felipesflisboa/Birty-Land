@@ -79,7 +79,6 @@ public class Player : Character {
 		aimDetectionTimer = new Timer(CURSOR_DETECTION_INTERVAL);
         if(GameManager.I.UseTouchControls)
             autoAimTimer = new Timer(AUTO_AIM_INTERVAL);
-        // refreshDestructibleArrayTimer = new Timer(REFRESH_DESTRUCTIBLE_ARRAY); //remove
 
         if (walkingBGM!=null)
 			refreshWalkingBGMTimer = new Timer(REFRESH_WALKING_BGM_INTERVAL);
@@ -90,15 +89,6 @@ public class Player : Character {
 
 		if(!CanAct)
 			return;
-
-        //remove
-        // bool autoAim = true;
-        // if (autoAim) {
-            //remove
-            // if (refreshDestructibleArrayTimer.CheckAndUpdate()) {
-            //    gameDestructibleArray = Scenario;
-            // }
-        // }
 
         if (autoAimTimer!= null && autoAimTimer.CheckAndUpdate()) {
             Destructible lastTarget = target;

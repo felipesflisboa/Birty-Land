@@ -4,7 +4,7 @@
 public class ScoreListTimed : ScoreListInt{
 	protected override string KeyLabel{
 		get{
-			return "BirtyLand5";
+			return "BirtyLand6";
 		}
 	}
 	public override string GetStringAsValue(int value){

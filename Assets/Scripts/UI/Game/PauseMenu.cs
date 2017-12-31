@@ -10,18 +10,8 @@ public class PauseMenu : MonoBehaviour {
 	[SerializeField] Text attackLabel;	
 	[SerializeField] Text speedLabel;
     [SerializeField] Text autoFireLabel;
-    //remove
- //   [SerializeField] RectTransform mobileTopRect;
- //   [SerializeField] RectTransform nonMobileTopRect;
 
     PlayerLevelController levelSystem;
-
-    /* //remove
-    void Start() {
-        mobileTopRect.gameObject.SetActive(GameManager.I.UseTouchControls);
-        nonMobileTopRect.gameObject.SetActive(!GameManager.I.UseTouchControls);
-    }
-    */
 
     void OnEnable(){
 		if(levelSystem == null && GameManager.I.player != null)
