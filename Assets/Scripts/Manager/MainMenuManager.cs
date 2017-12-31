@@ -4,8 +4,10 @@ using System.Collections;
 
 public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
     [SerializeField] Text versionLabel;
+    [SerializeField] CanvasGroup mainGroup;
+    [SerializeField] CanvasGroup webGLGroup;
 
-	MainMenuPanelType currentPanelOption;
+    MainMenuPanelType currentPanelOption;
 	MainMenuPanel[] panelArray;
 	Timer clickCooldownTimer;
 
@@ -27,6 +29,14 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
 
         versionLabel.text = Version;
 
+#if UNITY_WEBGL
+        mainGroup.gameObject.SetActive(false);
+        webGLGroup.gameObject.SetActive(true);
+#else
+        mainGroup.gameObject.SetActive(true);
+        webGLGroup.gameObject.SetActive(false);
+#endif
+
         System.GC.Collect(); // Clear game no more used memory.
     }
 
@@ -38,7 +48,11 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
 	}
 
 #region Buttons
-	public void Play(){
+    public void Title() {
+        EnablePanel(MainMenuPanelType.TITLE);
+    }
+
+    public void Play(){
 		ScoreListTimedDrawer.lastScore=null;
 		UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
 	}
@@ -47,8 +61,8 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
 		EnablePanel(MainMenuPanelType.INFO);
 	}
 
-	public void Controls(){
-		EnablePanel(MainMenuPanelType.CONTROLS);
+	public void Resolution(){
+		EnablePanel(MainMenuPanelType.RESOLUTION);
 	}
 
 	public void HighScores(){
@@ -56,15 +70,18 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
 	}
 
 	public void Exit(){
-		Application.Quit();
-	}
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
 #endregion
 
 	void Update(){
 		bool backToTitle = (
 			Input.GetButtonDown("Fire1") && 
-			currentPanelOption!=MainMenuPanelType.TITLE && 
-			currentPanelOption!=MainMenuPanelType.INFO && 
+			currentPanelOption==MainMenuPanelType.HIGH_SCORES &&
 			clickCooldownTimer.CheckAndUpdate()
 		);
 		if(backToTitle){
