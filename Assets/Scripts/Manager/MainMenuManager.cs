@@ -4,8 +4,6 @@ using System.Collections;
 
 public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
     [SerializeField] Text versionLabel;
-    [SerializeField] CanvasGroup mainGroup;
-    [SerializeField] CanvasGroup webGLGroup;
 
     MainMenuPanelType currentPanelOption;
 	MainMenuPanel[] panelArray;
@@ -13,7 +11,7 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
 
     string Version {
         get {
-            return "Version 1.1";
+            return "Version 1.1.1";
         }
     }
 
@@ -28,14 +26,6 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
 		EnablePanel(newPanelOption);
 
         versionLabel.text = Version;
-
-#if UNITY_WEBGL
-        mainGroup.gameObject.SetActive(false);
-        webGLGroup.gameObject.SetActive(true);
-#else
-        mainGroup.gameObject.SetActive(true);
-        webGLGroup.gameObject.SetActive(false);
-#endif
 
         System.GC.Collect(); // Clear game no more used memory.
     }
@@ -52,9 +42,12 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
         EnablePanel(MainMenuPanelType.TITLE);
     }
 
-    public void Play(){
-		ScoreListTimedDrawer.lastScore=null;
-		UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
+    public void Play() {
+        EnablePanel(MainMenuPanelType.LOADING);
+        ScoreListTimedDrawer.lastScore = null;
+        this.Invoke(new WaitForEndOfFrame(), () => {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
+        });
 	}
 
 	public void Info(){
@@ -78,8 +71,11 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
     }
 #endregion
 
-	void Update(){
-		bool backToTitle = (
+	void Update() {
+        if (currentPanelOption == MainMenuPanelType.LOADING)
+            return;
+
+        bool backToTitle = (
 			Input.GetButtonDown("Fire1") && 
 			currentPanelOption==MainMenuPanelType.HIGH_SCORES &&
 			clickCooldownTimer.CheckAndUpdate()
@@ -87,5 +83,16 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
 		if(backToTitle){
 			EnablePanel(MainMenuPanelType.TITLE);
 		}
+        if(Input.GetKey(KeyCode.Escape)){
+            if (currentPanelOption == MainMenuPanelType.TITLE) {
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#elif !UNITY_WEBGL && !UNITY_IOS			
+			    Application.Quit();
+#endif
+            } else {
+                EnablePanel(MainMenuPanelType.TITLE);
+            }
+        }
 	}
 }

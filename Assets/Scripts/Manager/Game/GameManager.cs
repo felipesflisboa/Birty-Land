@@ -21,7 +21,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     public bool UseTouchControls {
         get {
-#if UNITY_ANDROID || UNITY_IOS || FORCE_MOBILE_CONTROL
+#if UNITY_ANDROID || UNITY_IOS
             return true;
 #elif UNITY_WEBGL
             return WebGLMobileCheck.IsMobile;

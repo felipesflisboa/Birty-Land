@@ -7,8 +7,6 @@ using UnityEngine.UI;
 /// Handle the Canvas on game.
 /// </summary>
 public class CanvasController : SingletonMonoBehaviour<CanvasController> {
-    [Tooltip("To activate if mobile."), SerializeField] RectTransform[] mobileRectArray;
-    [Tooltip("To deactivate if mobile."),SerializeField] RectTransform[] nonMobileRectArray;
     [SerializeField] PauseMenu pauseMenu;
     [SerializeField] RectTransform gameOverRect;
     [SerializeField] RectTransform exitDialogRect;
@@ -49,11 +47,6 @@ public class CanvasController : SingletonMonoBehaviour<CanvasController> {
             initialAlertRect.gameObject.SetActive(true);
             this.Invoke(new WaitForSeconds(2.5f), () => initialAlertRect.gameObject.SetActive(false));
         }
-
-        foreach (RectTransform rectTransform in mobileRectArray)
-            rectTransform.gameObject.SetActive(GameManager.I.UseTouchControls);
-        foreach (RectTransform rectTransform in nonMobileRectArray)
-            rectTransform.gameObject.SetActive(!GameManager.I.UseTouchControls);
     }
 
 	public void DisplayGameOverMenu (){

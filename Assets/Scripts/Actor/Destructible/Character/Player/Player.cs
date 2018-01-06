@@ -11,6 +11,7 @@ public class Player : Character {
 
 	internal PlayerLevelController levelController;
     float sqrMinClickDistanceByMovement;
+    float sqrMinClickDistanceToMove;
 
     Timer aimDetectionTimer;
 	Timer refreshWalkingBGMTimer;
@@ -24,7 +25,7 @@ public class Player : Character {
 	const float REFRESH_WALKING_BGM_INTERVAL = 0.1f;
     const float AUTO_AIM_INTERVAL = 0.2f;
     const float AUTO_AIM_MAX_DISTANCE = 15f;
-    const float MIN_CLICK_DISTANCE_BY_MOVEMENT = 0.5f;
+    const float MIN_CLICK_DISTANCE_BY_MOVEMENT = 1f;
 
     protected override bool AutoClampPos {
 		get {
