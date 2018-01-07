@@ -516,17 +516,6 @@ MonoBehaviour:
   baseSpeed: 0
   moveAnimation: {fileID: 95726627890945212}
   moveAnimationMultiplier: 0.25
-  bulletPrefab: {fileID: 1562015719994462, guid: 4f90484722ea7684980f54208ef546f5,
-    type: 2}
-  bulletShootPointArray:
-  - {fileID: 4136763542739632}
-  - {fileID: 4985983919771078}
-  - {fileID: 4045225233743424}
-  bulletShootSFX: {fileID: 82169257917317434}
-  bulletDamage: 60
-  bulletCooldown: 0.6
-  bulletSpeed: 30
-  bulletDuration: 1.3
   spriteMaterialArray:
   - {fileID: 2100000, guid: 48e5fe07880b9554fb36ff48bc79e546, type: 2}
   - {fileID: 2100000, guid: bfb26aabcf3e64548988dcde10bf9992, type: 2}
@@ -571,7 +560,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 11
-  m_Sprite: {fileID: 21300000, guid: b612d9a9071ede1408e417840c50f547, type: 3}
+  m_Sprite: {fileID: 21300006, guid: d40cb61dcf1effd41a066df96d1204e1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

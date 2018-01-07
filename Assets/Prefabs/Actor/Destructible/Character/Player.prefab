@@ -737,14 +737,6 @@ MonoBehaviour:
   cameraContainer: {fileID: 4595553039130594}
   walkingBGM: {fileID: 82082970852206978}
   damageSFX: {fileID: 82254974693045018}
-  bulletPrefab: {fileID: 1562015719994462, guid: 4f90484722ea7684980f54208ef546f5,
-    type: 2}
-  bulletShootPoint: {fileID: 4990302089221826}
-  bulletShootSFX: {fileID: 82981071438219236}
-  bulletDamage: 10
-  bulletCooldown: 0.3
-  bulletSpeed: 16
-  bulletDuration: 0.5
 --- !u!212 &212863258215329622
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -779,7 +771,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: b3a747015fe639841a6ac55fe8794c83, type: 3}
+  m_Sprite: {fileID: 21300004, guid: d40cb61dcf1effd41a066df96d1204e1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
