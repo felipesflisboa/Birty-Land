@@ -126,6 +126,16 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	}
 
 	public void BackToMainMenu() {
+        // Save time regarding to ADS exhibition.
+        if (ADSUtil.Supported) {
+            /* //remove
+            int adsRemainingGameplayTime = PlayerPrefs.GetInt(MainMenuManager.ADS_GAMEPLAY_TIME_TO_SHOW_KEY, 0);
+            adsRemainingGameplayTime = Mathf.Max(adsRemainingGameplayTime - SecondsInt, 0);
+            PlayerPrefs.SetInt(MainMenuManager.ADS_GAMEPLAY_TIME_TO_SHOW_KEY, adsRemainingGameplayTime);
+            */
+            int adsGameplayTime = PlayerPrefs.GetInt(MainMenuManager.ADS_GAMEPLAY_TIME_KEY, 0);
+            PlayerPrefs.SetInt(MainMenuManager.ADS_GAMEPLAY_TIME_KEY, adsGameplayTime + SecondsInt);
+        }
         LoadScene("MainMenu");
     }
 

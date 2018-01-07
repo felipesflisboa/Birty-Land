@@ -14,6 +14,10 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
             return "Version 1.1.1";
         }
     }
+    
+    /// Gameplay time needed for showing ADS.
+    public const string ADS_GAMEPLAY_TIME_KEY = "ADSGameplayTime";
+    const int ADS_SHOW_GAMEPLAY_TIME = 150;
 
 	void Start () {
 		clickCooldownTimer = new Timer(0.75f);
@@ -30,12 +34,16 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
         System.GC.Collect(); // Clear game no more used memory.
     }
 
-	public void EnablePanel(MainMenuPanelType panelOption){
-		currentPanelOption = panelOption;
-		foreach(MainMenuPanel panel in panelArray){
-			panel.gameObject.SetActive(panel.panelType==panelOption);
-		}
-	}
+    public void EnablePanel(MainMenuPanelType panelOption) {
+        currentPanelOption = panelOption;
+        foreach (MainMenuPanel panel in panelArray) {
+            panel.gameObject.SetActive(panel.panelType == panelOption);
+        }
+    }
+    
+    void GoIntoGameScene() {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
+    }
 
 #region Buttons
     public void Title() {
@@ -46,11 +54,38 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
         EnablePanel(MainMenuPanelType.LOADING);
         ScoreListTimedDrawer.lastScore = null;
         this.Invoke(new WaitForEndOfFrame(), () => {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
+            if (ADSUtil.Supported) {
+                int adsGameplayTime = PlayerPrefs.GetInt(ADS_GAMEPLAY_TIME_KEY, 0);
+
+                if (adsGameplayTime >= ADS_SHOW_GAMEPLAY_TIME && ADSUtil.IsReady) {
+                    PlayerPrefs.SetInt(ADS_GAMEPLAY_TIME_KEY, 0);
+                    ADSUtil.Show(GoIntoGameScene);
+                } else {
+                    GoIntoGameScene();
+                }
+                /* //remove
+                int adsRemainingTimeToShow = PlayerPrefs.GetInt(ADS_GAMEPLAY_TIME_TO_SHOW_KEY, -1);
+
+                bool firstTime = adsRemainingTimeToShow == -1;
+                if(firstTime) {
+                    adsRemainingTimeToShow = ADS_REMAINING_GAMEPLAY_TIME_TO_SHOW;
+                    PlayerPrefs.SetInt(ADS_GAMEPLAY_TIME_TO_SHOW_KEY, adsRemainingTimeToShow);
+                }
+                
+                if (adsRemainingTimeToShow <= 0 && ADSUtil.IsReady) {
+                    PlayerPrefs.SetInt(ADS_GAMEPLAY_TIME_TO_SHOW_KEY, ADS_REMAINING_GAMEPLAY_TIME_TO_SHOW);
+                    ADSUtil.Show(GoIntoGameScene);
+                } else {
+                    GoIntoGameScene();
+                }
+                */
+            } else {
+                GoIntoGameScene();
+            }
         });
 	}
 
-	public void Info(){
+    public void Info(){
 		EnablePanel(MainMenuPanelType.INFO);
 	}
 
@@ -71,7 +106,7 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
     }
 #endregion
 
-	void Update() {
+    void Update() {
         if (currentPanelOption == MainMenuPanelType.LOADING)
             return;
 
