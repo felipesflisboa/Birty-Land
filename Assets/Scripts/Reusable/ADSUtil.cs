@@ -30,17 +30,27 @@ public class ADSUtil : MonoBehaviour {
     }
 
     public static void Show(System.Action callback) {
-        System.Action<ShowResult> newCallback = (result) => callback();
+        System.Action<bool?> newCallback = (result) => callback();
         Show(newCallback);
     }
 
-    public static void Show(System.Action<ShowResult> callback) {
+    /// <summary>
+    /// Show a video ADS.
+    /// </summary>
+    /// <param name="callback">Callback. True if was viewed until the end, false if was skipped, or null if wasn't showed.</param>
+    public static void Show(System.Action<bool?> callback) {
 #if UNITY_ADS
         ShowOptions options = new ShowOptions();
-        options.resultCallback = callback;
+        options.resultCallback = (result) => {
+            switch (result) {
+                case ShowResult.Finished:   callback(true);     break;
+                case ShowResult.Skipped:    callback(false);    break;
+                case ShowResult.Failed:     callback(null);     break;
+            }
+        };
         Advertisement.Show(options);
 #else
-		Debug.LogError("Ads not supported on this platform!");
+        Debug.LogError("Ads not supported on this platform!");
 #endif
     }
 }

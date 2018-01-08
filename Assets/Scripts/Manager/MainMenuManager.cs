@@ -17,9 +17,9 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
     
     /// Gameplay time needed for showing ADS.
     public const string ADS_GAMEPLAY_TIME_KEY = "ADSGameplayTime";
-    const int ADS_SHOW_GAMEPLAY_TIME = 150;
+    const int ADS_SHOW_GAMEPLAY_TIME = 180;
 
-	void Start () {
+    void Start () {
 		clickCooldownTimer = new Timer(0.75f);
 
 		panelArray = GetComponentsInChildren<MainMenuPanel>(true);
@@ -63,22 +63,6 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
                 } else {
                     GoIntoGameScene();
                 }
-                /* //remove
-                int adsRemainingTimeToShow = PlayerPrefs.GetInt(ADS_GAMEPLAY_TIME_TO_SHOW_KEY, -1);
-
-                bool firstTime = adsRemainingTimeToShow == -1;
-                if(firstTime) {
-                    adsRemainingTimeToShow = ADS_REMAINING_GAMEPLAY_TIME_TO_SHOW;
-                    PlayerPrefs.SetInt(ADS_GAMEPLAY_TIME_TO_SHOW_KEY, adsRemainingTimeToShow);
-                }
-                
-                if (adsRemainingTimeToShow <= 0 && ADSUtil.IsReady) {
-                    PlayerPrefs.SetInt(ADS_GAMEPLAY_TIME_TO_SHOW_KEY, ADS_REMAINING_GAMEPLAY_TIME_TO_SHOW);
-                    ADSUtil.Show(GoIntoGameScene);
-                } else {
-                    GoIntoGameScene();
-                }
-                */
             } else {
                 GoIntoGameScene();
             }

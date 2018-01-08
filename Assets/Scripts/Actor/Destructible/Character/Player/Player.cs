@@ -117,7 +117,7 @@ public class Player : Character {
                 if(target!=null && target.Alive)
                     difference = (target.transform.position - transform.position).XZToV2();
             } else {
-                GameManager.I.RefreshClickPosition();
+                GameManager.I.RefreshCursorPosition();
                 difference = GameManager.I.lastClickWorldPos - transform.position.XZToV2();
             }
 
@@ -151,8 +151,20 @@ public class Player : Character {
 			return;
 
         if (GameManager.I.UseTouchControls) {
-            GameManager.I.RefreshClickPosition();
+            bool clicked = Input.GetMouseButton(0);
+#if UNITY_EDITOR
+            clicked = true; // Don't force a click on editor.
+#endif
+            if(clicked)
+                GameManager.I.RefreshCursorPosition();
             Vector2 clickDifference = GameManager.I.lastClickWorldPos - transform.position.XZToV2();
+            Debug.LogFormat(
+                "lastClickWorldPos={0} transform.position={1} clickDifference={2} clickDifference.sqrMagnitude={3}",
+                GameManager.I.lastClickWorldPos,
+                transform.position,
+                clickDifference,
+                clickDifference.sqrMagnitude
+            ); //remove
             if(sqrMinClickDistanceByMovement < clickDifference.sqrMagnitude)
                 Move(clickDifference.normalized.YToZ());
         } else {

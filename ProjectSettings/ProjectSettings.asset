@@ -254,7 +254,7 @@ PlayerSettings:
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
   AndroidEnableTango: 0
-  androidEnableBanner: 1
+  androidEnableBanner: 0
   androidUseLowAccuracyLocation: 0
   m_AndroidBanners:
   - width: 320
@@ -293,7 +293,7 @@ PlayerSettings:
       m_Height: 72
       m_Kind: 0
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 21980b883efb35141a0b90d6fe816967, type: 3}
+      m_Icon: {fileID: 2800000, guid: bf441fe8d5d9f274d9963a8d52d7d2bf, type: 3}
       m_Width: 48
       m_Height: 48
       m_Kind: 0
@@ -325,7 +325,7 @@ PlayerSettings:
       m_Height: 128
       m_Kind: 0
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: f341e1daa7a3d7749ab0bdc9741ad7e6, type: 3}
+      m_Icon: {fileID: 2800000, guid: bf441fe8d5d9f274d9963a8d52d7d2bf, type: 3}
       m_Width: 48
       m_Height: 48
       m_Kind: 0
