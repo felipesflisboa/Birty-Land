@@ -9,6 +9,14 @@ using UnityEngine.Advertisements;
 /// ADS util class.
 /// </summary>
 public class ADSUtil : MonoBehaviour {
+    /// <summary>
+    /// ADS Result.
+    /// Override other frameworks enums to have total package independency.
+    /// </summary>
+    public enum Result {
+        None = 0, Failed, Skipped, Finished
+    }
+
     public static bool Supported {
         get {
 #if UNITY_ADS
@@ -30,7 +38,7 @@ public class ADSUtil : MonoBehaviour {
     }
 
     public static void Show(System.Action callback) {
-        System.Action<bool?> newCallback = (result) => callback();
+        System.Action<Result> newCallback = (result) => callback();
         Show(newCallback);
     }
 
@@ -38,14 +46,14 @@ public class ADSUtil : MonoBehaviour {
     /// Show a video ADS.
     /// </summary>
     /// <param name="callback">Callback. True if was viewed until the end, false if was skipped, or null if wasn't showed.</param>
-    public static void Show(System.Action<bool?> callback) {
+    public static void Show(System.Action<Result> callback) {
 #if UNITY_ADS
         ShowOptions options = new ShowOptions();
         options.resultCallback = (result) => {
             switch (result) {
-                case ShowResult.Finished:   callback(true);     break;
-                case ShowResult.Skipped:    callback(false);    break;
-                case ShowResult.Failed:     callback(null);     break;
+                case ShowResult.Finished:   callback(Result.Finished);  break;
+                case ShowResult.Skipped:    callback(Result.Skipped);   break;
+                case ShowResult.Failed:     callback(Result.Failed);    break;
             }
         };
         Advertisement.Show(options);

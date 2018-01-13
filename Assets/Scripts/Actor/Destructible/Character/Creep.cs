@@ -31,7 +31,7 @@ public class Creep : Character {
 
 	protected override void Awake(){
 		base.Awake();
-		team = Team.ENEMY;
+		team = Team.Enemy;
 		refreshTargetTimer = new Timer(0.3f);
 		if(collisionCooldown>0f && collisionDamage>0 )
 			collisionTimer = new Timer(collisionCooldown);

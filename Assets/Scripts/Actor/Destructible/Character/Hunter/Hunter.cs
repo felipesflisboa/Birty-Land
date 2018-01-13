@@ -18,7 +18,7 @@ public class Hunter : Character {
 
 	protected override void Awake(){
 		base.Awake();
-		team = Team.ENEMY;
+		team = Team.Enemy;
 		refreshTargetTimer = new Timer(0.08f);;
     }
 

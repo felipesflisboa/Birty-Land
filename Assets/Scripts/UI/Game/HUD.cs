@@ -22,7 +22,7 @@ public class HUD : MonoBehaviour {
 	}
 
 	public virtual void Refresh(){
-		if(GameManager.I.state == GameState.BEFORE_START)
+		if(GameManager.I.state == GameState.BeforeStart)
 			return;
 
 		refreshTimer.Reset();

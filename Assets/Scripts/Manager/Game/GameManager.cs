@@ -49,7 +49,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	}
 
 	void Awake () {
-		state = GameState.BEFORE_START;
+		state = GameState.BeforeStart;
 
 		bool canvasManagerFound  = FindObjectOfType<CanvasController>() != null; //TODO other assign that works on disabled object
 		if(!canvasManagerFound)
@@ -82,7 +82,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
 	protected virtual void StartGame(){
 		startTime = Time.timeSinceLevelLoad;
-		state = GameState.OCURRING;
+		state = GameState.Ocurring;
 		HiveSpawnManager.I.Begin();
 		HunterSpawnManager.I.Begin();
 	}
@@ -100,7 +100,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 				float sqrRadius = radius*radius;
 				List<Destructible> destructibleToDamage = new List<Destructible>();
 				foreach(Destructible destructible in FindObjectsOfType<Destructible>()){
-					if(destructible.team == Team.ALLY)
+					if(destructible.team == Team.Ally)
 						continue;
 
 					Vector3 difference = destructible.transform.position - player.transform.position;
@@ -145,7 +145,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	/// Ends the game with a Game Over.
 	/// </summary>
 	IEnumerator EndGameRoutine (){
-		state = GameState.END;
+		state = GameState.End;
 		endTime = Time.timeSinceLevelLoad;
 
 		if(Debug.isDebugBuild)
@@ -169,7 +169,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	/// Loads other scene. When name is null or empty, load self.
 	/// </summary>
 	public void LoadScene(string name=null, float delay = 0f){
-		state = GameState.END; // To make sure that some things like pause aren't called.
+		state = GameState.End; // To make sure that some things like pause aren't called.
 		if(delay != 0f){
 			this.Invoke(new WaitForSecondsRealtime(delay), () => LoadScene(name));
 			return;
@@ -186,7 +186,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 		int totalSeconds = SecondsInt;
 		string timeString = string.Format("{0}:{1:00}",totalSeconds / 60, totalSeconds % 60);
 		string debugMessage = string.Format("Time: {0}. Points: {1}/{2}", timeString, points, score);
-		if(state==GameState.END)
+		if(state==GameState.End)
 			debugMessage = "End game! " + debugMessage;
 		Debug.LogFormat("[GameManager.PrintDebugData] {0}", debugMessage);
 	}
@@ -219,7 +219,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
 #region Pause
     public void TryToTogglePause(){
-		if(state != GameState.OCURRING)
+		if(state != GameState.Ocurring)
 			return;
 		TogglePause();
 	}
@@ -231,12 +231,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	}
 	protected void Pause(){
 		Time.timeScale = 0;
-		if(state == GameState.OCURRING)
+		if(state == GameState.Ocurring)
 			CanvasController.I.TogglePauseMenu();
 	}
 	protected void Unpause(){
 		Time.timeScale = currentTimeScale;
-		if(state == GameState.OCURRING)
+		if(state == GameState.Ocurring)
 			CanvasController.I.TogglePauseMenu();
 	}
 #endregion

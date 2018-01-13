@@ -1,3 +1,3 @@
 ﻿public enum GameState {
-	NONE, BEFORE_START, OCURRING, END
+	None=0, BeforeStart, Ocurring, End
 }

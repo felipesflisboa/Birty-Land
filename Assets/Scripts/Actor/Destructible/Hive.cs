@@ -22,13 +22,13 @@ public class Hive : Destructible {
 
 	protected bool CanAct{
 		get{
-			return GameManager.I.state == GameState.OCURRING && Alive;
+			return GameManager.I.state == GameState.Ocurring && Alive;
 		}
 	}
 
 	protected override void Awake(){
 		base.Awake();
-		team = Team.ENEMY;
+		team = Team.Enemy;
 		StartCoroutine(SpawnRoutine());
 	}
 

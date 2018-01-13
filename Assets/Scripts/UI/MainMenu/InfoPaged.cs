@@ -27,7 +27,7 @@ public class InfoPaged : MonoBehaviour {
 			index++;
 			bool goToNextScene = index == panelArray.Length;
 			if(goToNextScene)
-				MainMenuManager.I.EnablePanel(MainMenuPanelType.TITLE);
+				MainMenuManager.I.EnablePanel(MainMenuPanelType.Title);
 			else
 				RefreshPanels();
 		}

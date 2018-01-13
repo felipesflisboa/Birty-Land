@@ -1,3 +1,3 @@
 ﻿public enum MainMenuPanelType{
-	NONE=0, TITLE, INFO, RESOLUTION, HIGH_SCORES, LOADING
+	None=0, Title, Info, Resolution, HighScores, Loading
 }

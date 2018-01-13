@@ -11,7 +11,7 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
 
     string Version {
         get {
-            return "Version 1.1.1";
+            return "Version 1.2";
         }
     }
     
@@ -26,7 +26,7 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
 
 		bool hasScore = ScoreListTimedDrawer.lastScore!=null;
 
-		MainMenuPanelType newPanelOption = hasScore ? MainMenuPanelType.HIGH_SCORES : MainMenuPanelType.TITLE;
+		MainMenuPanelType newPanelOption = hasScore ? MainMenuPanelType.HighScores : MainMenuPanelType.Title;
 		EnablePanel(newPanelOption);
 
         versionLabel.text = Version;
@@ -47,11 +47,11 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
 
 #region Buttons
     public void Title() {
-        EnablePanel(MainMenuPanelType.TITLE);
+        EnablePanel(MainMenuPanelType.Title);
     }
 
     public void Play() {
-        EnablePanel(MainMenuPanelType.LOADING);
+        EnablePanel(MainMenuPanelType.Loading);
         ScoreListTimedDrawer.lastScore = null;
         this.Invoke(new WaitForEndOfFrame(), () => {
             if (ADSUtil.Supported) {
@@ -70,15 +70,15 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
 	}
 
     public void Info(){
-		EnablePanel(MainMenuPanelType.INFO);
+		EnablePanel(MainMenuPanelType.Info);
 	}
 
 	public void Resolution(){
-		EnablePanel(MainMenuPanelType.RESOLUTION);
+		EnablePanel(MainMenuPanelType.Resolution);
 	}
 
 	public void HighScores(){
-		EnablePanel(MainMenuPanelType.HIGH_SCORES);
+		EnablePanel(MainMenuPanelType.HighScores);
 	}
 
 	public void Exit(){
@@ -91,26 +91,26 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
 #endregion
 
     void Update() {
-        if (currentPanelOption == MainMenuPanelType.LOADING)
+        if (currentPanelOption == MainMenuPanelType.Loading)
             return;
 
         bool backToTitle = (
 			Input.GetButtonDown("Fire1") && 
-			currentPanelOption==MainMenuPanelType.HIGH_SCORES &&
+			currentPanelOption==MainMenuPanelType.HighScores &&
 			clickCooldownTimer.CheckAndUpdate()
 		);
 		if(backToTitle){
-			EnablePanel(MainMenuPanelType.TITLE);
+			EnablePanel(MainMenuPanelType.Title);
 		}
         if(Input.GetKey(KeyCode.Escape)){
-            if (currentPanelOption == MainMenuPanelType.TITLE) {
+            if (currentPanelOption == MainMenuPanelType.Title) {
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
 #elif !UNITY_WEBGL && !UNITY_IOS			
 			    Application.Quit();
 #endif
             } else {
-                EnablePanel(MainMenuPanelType.TITLE);
+                EnablePanel(MainMenuPanelType.Title);
             }
         }
 	}

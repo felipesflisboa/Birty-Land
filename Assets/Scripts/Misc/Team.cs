@@ -1,3 +1,3 @@
 ﻿public enum Team{
-	NONE = 0, ALLY, ENEMY, NEUTRAL
+	None = 0, Ally, Enemy, Neutral
 }

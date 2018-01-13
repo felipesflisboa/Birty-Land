@@ -19,7 +19,7 @@ public class HunterSpawnManager : SingletonMonoBehaviour<HunterSpawnManager> {
 	}
 
 	void Update(){
-		if(GameManager.I.state != GameState.OCURRING)
+		if(GameManager.I.state != GameState.Ocurring)
 			return;
 
 		if(spawnCheckTimer != null && spawnCheckTimer.CheckAndUpdate()){

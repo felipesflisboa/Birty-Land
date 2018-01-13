@@ -70,7 +70,7 @@ public class Player : Character {
 
     protected override void Awake(){
 		base.Awake();
-		team = Team.ALLY;
+		team = Team.Ally;
 
         sqrAutoAimMaxDistance = AUTO_AIM_MAX_DISTANCE * AUTO_AIM_MAX_DISTANCE;
         sqrMinClickDistanceByMovement = MIN_CLICK_DISTANCE_BY_MOVEMENT * MIN_CLICK_DISTANCE_BY_MOVEMENT;
@@ -158,13 +158,6 @@ public class Player : Character {
             if(clicked)
                 GameManager.I.RefreshCursorPosition();
             Vector2 clickDifference = GameManager.I.lastClickWorldPos - transform.position.XZToV2();
-            Debug.LogFormat(
-                "lastClickWorldPos={0} transform.position={1} clickDifference={2} clickDifference.sqrMagnitude={3}",
-                GameManager.I.lastClickWorldPos,
-                transform.position,
-                clickDifference,
-                clickDifference.sqrMagnitude
-            ); //remove
             if(sqrMinClickDistanceByMovement < clickDifference.sqrMagnitude)
                 Move(clickDifference.normalized.YToZ());
         } else {

@@ -32,7 +32,7 @@ public class Character : Destructible {
 
 	protected virtual bool CanAct{
 		get{
-			return GameManager.I.state == GameState.OCURRING && Alive;
+			return GameManager.I.state == GameState.Ocurring && Alive;
 		}
 	}
 
