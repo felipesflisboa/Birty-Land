@@ -54,12 +54,12 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
         EnablePanel(MainMenuPanelType.Loading);
         ScoreListTimedDrawer.lastScore = null;
         this.Invoke(new WaitForEndOfFrame(), () => {
-            if (ADSUtil.Supported) {
+            if (AdsUtil.Supported) {
                 int adsGameplayTime = PlayerPrefs.GetInt(ADS_GAMEPLAY_TIME_KEY, 0);
 
-                if (adsGameplayTime >= ADS_SHOW_GAMEPLAY_TIME && ADSUtil.IsReady) {
+                if (adsGameplayTime >= ADS_SHOW_GAMEPLAY_TIME && AdsUtil.IsReady) {
                     PlayerPrefs.SetInt(ADS_GAMEPLAY_TIME_KEY, 0);
-                    ADSUtil.Show(GoIntoGameScene);
+                    AdsUtil.Show(GoIntoGameScene);
                 } else {
                     GoIntoGameScene();
                 }

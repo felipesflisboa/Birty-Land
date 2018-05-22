@@ -8,7 +8,7 @@ using UnityEngine.Advertisements;
 /// <summary>
 /// ADS util class.
 /// </summary>
-public class ADSUtil : MonoBehaviour {
+public class AdsUtil : MonoBehaviour {
     /// <summary>
     /// ADS Result.
     /// Override other frameworks enums to have total package independency.
