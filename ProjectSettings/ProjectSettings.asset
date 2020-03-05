@@ -159,7 +159,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.bluenebula.birtyland2
+    Android: com.bluenebula.birtyland
     Standalone: unity.bluenebula.Birty Land
     Tizen: com.Company.ProductName
     iOS: com.Company.ProductName
