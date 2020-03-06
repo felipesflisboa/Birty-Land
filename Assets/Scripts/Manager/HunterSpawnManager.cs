@@ -9,12 +9,13 @@ public class HunterSpawnManager : SingletonMonoBehaviour<HunterSpawnManager> {
 	[SerializeField] GameObject[] prefabArray;
 	[SerializeField] AudioSource spawnSFX;
 
-	int lastIndex=-1;
+	public int lastIndex { get; set; }
 	Timer spawnCheckTimer;
 
 	public const float SPAWN_INTERVAL = 60;
 
 	public void Begin(){
+		lastIndex = -1;
 		spawnCheckTimer = new Timer(SPAWN_INTERVAL, false);
 	}
 
@@ -30,8 +31,8 @@ public class HunterSpawnManager : SingletonMonoBehaviour<HunterSpawnManager> {
 		}
 	}
 
-	Hunter SpawnHunter(){
-		lastIndex = Mathf.Min(lastIndex+1, prefabArray.Length-1);
+	public Hunter SpawnHunter(){
+		MoveIndexToNext();
 		GameObject hunterPrefab = prefabArray[lastIndex];
 
 		Vector3 randomPos = Vector3.zero;
@@ -53,5 +54,10 @@ public class HunterSpawnManager : SingletonMonoBehaviour<HunterSpawnManager> {
 		}
 		Debug.LogErrorFormat("[HunterSpawnManager.Spawn] Can't spawn in {0}.", name);
 		return null;
+	}
+
+	// For debug
+	public void MoveIndexToNext() {
+		lastIndex = Mathf.Min(lastIndex + 1, prefabArray.Length - 1);
 	}
 }

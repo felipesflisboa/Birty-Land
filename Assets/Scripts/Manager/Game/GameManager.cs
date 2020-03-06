@@ -15,6 +15,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	protected float endTime;
 	float currentTimeScale;
 
+	internal bool debugUsed;
     internal bool autoFire;
     internal Vector2 lastClickWorldPos;
     Plane groundPlane = new Plane(Vector3.down, Vector3.zero);
@@ -88,41 +89,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	}
 
 	void Update () {
-		if(Debug.isDebugBuild){
-			// Turbo button
-			if (Input.GetKeyDown (KeyCode.F)){
-				float fastTimeScale = currentTimeScale*8f;
-				Time.timeScale = Mathf.Approximately(Time.timeScale, fastTimeScale) ? currentTimeScale : fastTimeScale;
-			}
-			// Damage all
-			if (Input.GetKey (KeyCode.E)){
-				const float radius = 16f;
-				float sqrRadius = radius*radius;
-				List<Destructible> destructibleToDamage = new List<Destructible>();
-				foreach(Destructible destructible in FindObjectsOfType<Destructible>()){
-					if(destructible.team == Team.Ally)
-						continue;
-
-					Vector3 difference = destructible.transform.position - player.transform.position;
-					bool onRange = difference.XZToV2().sqrMagnitude < sqrRadius;
-					if(onRange)
-						destructibleToDamage.Add(destructible);
-				}
-				foreach(Destructible destructible in destructibleToDamage)
-					destructible.TakeDamage(500);
-			}
-			// Restart
-			if (Input.GetKeyDown (KeyCode.R)){
-				LoadScene();
-			}
-			// Force Game Over
-			if(Input.GetKeyDown (KeyCode.G)){
-				player.Explode();
-			}
-		}
-		if (Input.GetButtonDown ("Jump")){
+		if(Debug.isDebugBuild)
+			UpdateDebugInput();
+		if (Input.GetButtonDown ("Jump"))
 			TryToTogglePause();
-		}
 	}
 
 	public void BackToMainMenu() {
@@ -151,13 +121,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 		if(Debug.isDebugBuild)
 			PrintDebugData();
 
-		int timeToSave = SecondsInt;
-		ScoreListTimed scoreList = new ScoreListTimed();
-		scoreList.Load();
-		bool newRecord = scoreList.AddScore(timeToSave);
-		if(newRecord)
-			scoreList.Save();
-		ScoreListTimedDrawer.lastScore = timeToSave;
+		if (!debugUsed) {
+			int timeToSave = SecondsInt;
+			ScoreListTimed scoreList = new ScoreListTimed();
+			scoreList.Load();
+			bool newRecord = scoreList.AddScore(timeToSave);
+			if(newRecord)
+				scoreList.Save();
+			ScoreListTimedDrawer.lastScore = timeToSave;
+		}
 
 		yield return new WaitForSeconds(2f);
 		CanvasController.I.DisplayGameOverMenu();
@@ -180,15 +152,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 			UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
 		else
 			UnityEngine.SceneManagement.SceneManager.LoadScene(name);
-	}
-
-	public void PrintDebugData(){
-		int totalSeconds = SecondsInt;
-		string timeString = string.Format("{0}:{1:00}",totalSeconds / 60, totalSeconds % 60);
-		string debugMessage = string.Format("Time: {0}. Points: {1}/{2}", timeString, points, score);
-		if(state==GameState.End)
-			debugMessage = "End game! " + debugMessage;
-		Debug.LogFormat("[GameManager.PrintDebugData] {0}", debugMessage);
 	}
 
 	/// <summary>
@@ -238,6 +201,58 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 		Time.timeScale = currentTimeScale;
 		if(state == GameState.Ocurring)
 			CanvasController.I.TogglePauseMenu();
+	}
+#endregion
+
+#region Debug
+	void UpdateDebugInput() {
+		// Turbo button
+		if (Input.GetKeyDown(KeyCode.F)) {
+			float fastTimeScale = currentTimeScale * 8f;
+			Time.timeScale = Mathf.Approximately(Time.timeScale, fastTimeScale) ? currentTimeScale : fastTimeScale;
+		}
+		// Damage all
+		if (Input.GetKey(KeyCode.E))
+			DestroyDestructiblesInRange();
+		// Restart
+		if (Input.GetKeyDown(KeyCode.R)) {
+			LoadScene();
+		}
+		// Force Game Over
+		if (Input.GetKeyDown(KeyCode.G)) {
+			player.Explode();
+		}
+	}
+
+	public void PrintDebugData() {
+		int totalSeconds = SecondsInt;
+		string timeString = string.Format("{0}:{1:00}", totalSeconds / 60, totalSeconds % 60);
+		string debugMessage = string.Format("Time: {0}. Points: {1}/{2}", timeString, points, score);
+		if (state == GameState.End)
+			debugMessage = "End game! " + debugMessage;
+		Debug.LogFormat("[GameManager.PrintDebugData] {0}", debugMessage);
+	}
+	
+	public void DestroyDestructiblesInRange() {
+		const float radius = 16f;
+		float sqrRadius = radius * radius;
+		List<Destructible> destructibleToDamage = new List<Destructible>();
+		foreach (Destructible destructible in FindObjectsOfType<Destructible>()) {
+			if (destructible.team == Team.Ally)
+				continue;
+
+			Vector3 difference = destructible.transform.position - player.transform.position;
+			bool onRange = difference.XZToV2().sqrMagnitude < sqrRadius;
+			if (onRange)
+				destructibleToDamage.Add(destructible);
+		}
+		foreach (Destructible destructible in destructibleToDamage)
+			destructible.TakeDamage(50000);
+		debugUsed = true;
+	}
+	
+	public void AddExtraTime(float extraSeconds) {
+		startTime -= extraSeconds;
 	}
 #endregion
 }

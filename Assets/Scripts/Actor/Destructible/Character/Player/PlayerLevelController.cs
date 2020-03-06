@@ -42,14 +42,14 @@ public class PlayerLevelController {
 		return currentLevel==1 ? 2 : Mathf.RoundToInt(5*Mathf.Pow(2,currentLevel-2));
 	}
 		
-	public bool RaiseHPLevel(){
-		return RaiseLevel(ref hpLevel);
+	public bool RaiseHPLevel(bool force=false){
+		return RaiseLevel(ref hpLevel, force);
 	}
-	public bool RaiseAttackLevel(){
-		return RaiseLevel(ref attackLevel);
+	public bool RaiseAttackLevel(bool force=false) {
+		return RaiseLevel(ref attackLevel, force);
 	}
-	public bool RaiseSpeedLevel(){
-		return RaiseLevel(ref speedLevel);
+	public bool RaiseSpeedLevel(bool force=false) {
+		return RaiseLevel(ref speedLevel, force);
 	}
 
 	/// <summary>
@@ -57,10 +57,12 @@ public class PlayerLevelController {
 	/// </summary>
 	/// <returns>If cost was payed and level increased.</returns>
 	/// <param name="currentLevel">Current level of the attribute who will raise if this method succeed.</param>
-	bool RaiseLevel(ref int currentLevel){
+	/// <param name="force">When true, don't apply the cost limitation.</param>
+	bool RaiseLevel(ref int currentLevel, bool force){
 		int cost = CostForNextLevel(currentLevel);
-		if(cost<=GameManager.I.points){
-			GameManager.I.SpendPoint(cost);
+		if(force || cost <= GameManager.I.points){
+			if(!force)
+				GameManager.I.SpendPoint(cost);
 			++currentLevel;
 			RefreshValues();
 			return true;
