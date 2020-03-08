@@ -1,0 +1,1 @@
+For Android background/foreground (8.0/API 26 and up), look at Plugins/Android.
