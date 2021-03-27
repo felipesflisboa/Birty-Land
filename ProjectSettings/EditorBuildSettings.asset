@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/BlueNebulaIntro.unity
+    guid: 56d078269e9e2214f9fa09c7dbf076b2
+  - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 81e34dc926d146d4992d1206223fd8f4
   - enabled: 1
