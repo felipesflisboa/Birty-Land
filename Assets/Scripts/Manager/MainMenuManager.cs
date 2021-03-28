@@ -11,7 +11,7 @@ public class MainMenuManager : SingletonMonoBehaviour<MainMenuManager> {
 
     string Version {
         get {
-            return "Version 1.2";
+            return "Version 1.2.1";
         }
     }
     
